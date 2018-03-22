@@ -1,9 +1,9 @@
 $(document).ready(function() {
-   var audioBox = document.getElementById("myAudio");
+   var audioBox = document.getElementById("audioBox");
    var d;
    setInterval(function() {
       d = new Date();
-      $('#Time').html(d.toLocaleTimeString());
+      $('#timeBox').html(d.toLocaleTimeString());
       if(d.getSeconds() == 0) {
          $('#testBox').html('whole minute')
       };
