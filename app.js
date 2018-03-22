@@ -1,6 +1,8 @@
 $(document).ready(function() {
-   setTimeout(function() {
-      var audioBox = document.getElementById("myAudio");
-      audioBox.play();
-   }, 2000);
+   var audioBox = document.getElementById("myAudio");
+   var d;
+   setInterval(function() {
+      d = new Date();
+      $('#Time').html(d.toLocaleTimeString());
+   }, 1000);
 });
