@@ -12,7 +12,7 @@ footer {
    position: fixed;
    bottom: 0;
 }
-footer p, footer a {
+footer p {
    font-family: 'Muli', sans-serif;
    font-size: 10px;
    text-align: center;
