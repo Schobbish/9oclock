@@ -1,4 +1,5 @@
 body {
+   /* to actually resize text on ios */
    -webkit-text-size-adjust: 100%;
 }
 #main * {
@@ -15,7 +16,7 @@ footer {
    position: fixed;
    bottom: 0;
 }
-footer p {
+footer p, footer a {
    font-family: 'Muli', sans-serif;
    font-size: 10px;
    text-align: center;
