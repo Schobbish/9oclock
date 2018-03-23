@@ -1,12 +1,11 @@
 $(document).ready(function() {
-   // playing can't be done with the jquery function
+   // playing this can't be done with the jquery function
    var audioBox = document.getElementById("audioBox");
    var d;
 
    // this will run fifty times a second (for accuracy)
    setInterval(function() {
       d = new Date();
-      // Date(2018, 2, 17) is a Saturday
       $('#timeBox').html(d.toLocaleTimeString('en-us'));
 
       if(d.getDay() == 6) {
@@ -20,5 +19,5 @@ $(document).ready(function() {
       if(d.getDay() == 6 && (d.getHours() == 9 || d.getHours() == 21) && d.getMinutes() == 0 && d.getSeconds() == 0) {
          audioBox.play();
       }
-   }, 50);
+   }, 20);
 });
