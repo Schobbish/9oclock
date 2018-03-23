@@ -7,17 +7,17 @@
    font-weight: 300;
    margin-bottom: 10px;
 }
-footer {
+#footer {
    width: 100%;
    position: fixed;
    bottom: 0;
 }
-footer p {
+#footer p {
    font-family: 'Muli', sans-serif;
    font-size: 10px;
    text-align: center;
    color: #dcdcdc;
 }
-footer a:hover {
+#footer a:hover {
    color: #c0c0c0;
 }
