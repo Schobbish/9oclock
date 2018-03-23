@@ -1,4 +1,7 @@
 $(document).ready(function() {
+
+   // this will play the song every full minute
+
    var audioBox = document.getElementById("audioBox");
    var d;
 
@@ -11,10 +14,9 @@ $(document).ready(function() {
       if(d.getDay() == 6) {
          $('#dayBox').html('Today is Saturday');
       } else {
-         $('#dayBox').html('Today is Not Saturday')
+         $('#dayBox').html('Today is Not Saturday');
       }
-      // if saturday and exactly at 9:00:00 (am or pm)
-      if(d.getDay() == 6 && (d.getHours() == 9 || d.getHours() == 21) && d.getMinutes() == 0 && d.getSeconds() == 0) {
+      if(d.getSeconds() == 0) {
          audioBox.play();
       }
    }, 50);
