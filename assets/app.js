@@ -1,4 +1,5 @@
 $(document).ready(function() {
+   // playing can't be done with the jquery function
    var audioBox = document.getElementById("audioBox");
    var d;
 
@@ -6,7 +7,7 @@ $(document).ready(function() {
    setInterval(function() {
       d = new Date();
       // Date(2018, 2, 17) is a Saturday
-      $('#timeBox').html(d.toLocaleTimeString());
+      $('#timeBox').html(d.toLocaleTimeString('en-us'));
 
       if(d.getDay() == 6) {
          $('#dayBox').html('Today is Saturday');
