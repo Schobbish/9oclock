@@ -16,7 +16,7 @@ $(document).ready(function() {
       // if saturday and exactly at 9:00:00 (am or pm)
       // correct if statement:
       // d.getDay() == 6 && (d.getHours() == 9 || d.getHours() == 21) && d.getMinutes() == 0 && d.getSeconds() == 0
-      if(d.getDay() == 4 && (d.getHours() == 9 || d.getHours() == 17) && d.getMinutes() == 27 && d.getSeconds() == 0) {
+      if(d.getDay() == 4 && (d.getHours() == 9 || d.getHours() == 17) && d.getMinutes() == 30 && d.getSeconds() == 0) {
          audioBox.play();
       }
    }, 50);
