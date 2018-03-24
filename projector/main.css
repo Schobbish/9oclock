@@ -18,13 +18,12 @@ footer {
    position: fixed;
    bottom: 0;
 }
-/* footer colors should be changed later */ 
 footer p, footer a {
    font-family: 'Muli', sans-serif;
    font-size: 10px;
    text-align: center;
-   color: #dcdcdc;
+   color: #282828;
 }
 footer a:hover {
-   color: #c0c0c0;
+   color: #343434;
 }
