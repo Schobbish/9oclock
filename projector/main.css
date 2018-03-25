@@ -27,3 +27,11 @@ footer p, footer a {
 footer a:hover {
    color: #343434;
 }
+textarea {
+   width: 100%;
+   background-color: #000000;
+   border: none;
+   resize: none;
+   font-size: 100px;
+   font-weight: 300;
+}
