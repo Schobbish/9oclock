@@ -10,6 +10,7 @@ body {
    font-size: 100px;
    font-weight: 300;
    margin-bottom: 10px;
+   cursor: none;
 }
 footer {
    width: 100%;
