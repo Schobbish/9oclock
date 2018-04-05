@@ -23,4 +23,14 @@ $(document).ready(function() {
          audioBox.play();
       } */
    }, 20);
+   /*$('textarea').change(function() {
+      text = $(this).val();
+      splitText = text.split(' ');
+      if(splitText[0] == '>>>') {
+         switch(splitText[1]) {
+            case 'background-color':
+               
+         };
+      };
+   });*/
 });
