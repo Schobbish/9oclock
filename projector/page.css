@@ -13,7 +13,7 @@ footer a:hover {
 }
 textarea {
    width: 100%;
-   background-color: #000000;
+   background-color: transparent;
    border: none;
    resize: none;
    font-size: 100px;
