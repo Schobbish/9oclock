@@ -24,6 +24,8 @@ $(document).ready(function() {
          audioBox.play();
         } */
     }, 20);
+
+    // for commands in the textarea
     $('textarea').change(function() {
         // get value of textarea
         text = $(this).val();
