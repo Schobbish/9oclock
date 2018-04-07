@@ -10,12 +10,12 @@ $(document).ready(function() {
    setInterval(function() {
       d = new Date();
       // Date(2018, 2, 17) is a Saturday
-      $('#timeBox').html(d.toLocaleTimeString('en-us'));
+      $('#clock').html(d.toLocaleTimeString('en-us'));
 
       if(d.getDay() == 6) {
-         $('#dayBox').html('Today is Saturday');
+         $('#day').html('Today is Saturday');
       } else {
-         $('#dayBox').html('Today is Not Saturday');
+         $('#day').html('Today is Not Saturday');
       }
       // if seconds are 0
       if(d.getSeconds() == 0) {
