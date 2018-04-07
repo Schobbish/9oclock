@@ -41,19 +41,26 @@ $(document).ready(function() {
                 // this will only ever have one item but it must be done this way
                 var styles = {};
 
+                // Selector and Declaration
+                var sd = lines[i].split(' = ', 2);
+                // take out >>> from the first value of sd and you've got the selector
+                var selector = sd[0].replace('>>> ', '');
+                console.log(sd);
+                console.log(selector);
+
                 // allows for a done command later
-                if(args[1] != 'done') {
+                if(selector != 'done') {
                     // assign value to property
                     styles[args[2]] = args[3];
-                    if(args[1] == '--main') {
+                    if(selector == '--main') {
                         // this selector will select #clock and textarea
-                        args[1] = '#clock, textarea';
+                        selector = '#clock, textarea';
                     }
-                    if(args[1] == '--foot') {
+                    if(selector == '--foot') {
                         // this selector will selector the footer and the paragraph and links in it
-                        args[1] = 'footer, footer p, footer a';
+                        selector = 'footer, footer p, footer a';
                     }
-                    $(args[1]).css(styles);
+                    $(selector).css(styles);
                 } else {
                     // creates the done command
                     $(this).val('');
