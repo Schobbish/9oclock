@@ -6,7 +6,7 @@ body {
    text-align: center;
    font-family: 'Muli', sans-serif;
 }
-#timeBox {
+#clock {
    font-size: 100px;
    font-weight: 300;
    margin-bottom: 10px;

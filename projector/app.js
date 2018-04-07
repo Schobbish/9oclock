@@ -10,7 +10,7 @@ $(document).ready(function() {
     // this will run fifty times a second (for accuracy)
     setInterval(function() {
         d = new Date();
-        $('#timeBox').html(d.toLocaleTimeString('en-us'));
+        $('#clock').html(d.toLocaleTimeString('en-us'));
 
         /* if(d.getDay() == 6) {
             $('#dayBox').html('Today is Saturday');
@@ -32,91 +32,38 @@ $(document).ready(function() {
         lines = text.split('\n');
 
         for(var i = 0; i < lines.length; i++) {
-            // split the line into words
-            var args = lines[i].split(' ');
+            // split the line into words but not the value part because there
+            // are multi-word values
+            // args[1] = selector; args[2] = property; args[3] = value
+            var args = lines[i].split(' ', 3);
+            // grab what's after the point where it stopped splitting
+            // this will be the value of the property
+            var leftovers = lines[i].replace(args.join(' ') + ' ', '');
+            args.push(leftovers);
+            // remove the colon from the property
+            args[2] = args[2].replace(':', '');
 
+            // properties are keys and values are values
+            var styles = {};
             if(args[0] == '>>>') {
-                var property = args[1];
-                var styles = {};
-                // strip the colon off the property
-                property = property.replace(':', '');
-
-                switch(property) {
-                    case 'background-color':
-                    case 'background-image':
-                    case 'background-position':
-                    case 'background-size':
-                    case 'background-repeat':
-                    case 'background-attachment':
-                        // for body styles that are the same in css
-                        // if there are two arguments (for background-position)
-                        if(args[2] && args[3]) {
-                            // add an entry to the dictionary that will set new css styles
-                            styles[property] = args[2] + ' ' + args[3];
-                            console.log(`>>> ${property}: ${args[2]} ${args[3]}`);
-                        } else if(args[2]) {
-                            styles[property] = args[2];
-                            console.log(`>>> ${property}: ${args[2]}`);
-                        }
-                        // add css styles to the body - css() accepts a dictionary
-                        // with entries formatted like property: value
-                        $('body').css(styles);
-                        break;
-
-                    case 'clock-color':
-                    case 'clock-font-size':
-                    case 'clock-font-family':
-                        // font-family can only accept single word values (so no
-                        // Times New Roman) right now
-                    case 'clock-display':
-                    case 'clock-margin-top':
-                        // for #timeBox (the clock)
-                        // take off the 'clock-' prefix before adding to dictionary
-                        styles[property.replace('clock-', '')] = args[2];
-                        console.log(`>>> ${property}: ${args[2]}`);
-                        $('#timeBox').css(styles);
-                        break;
-
-                    case 'message-color':
-                    case 'message-font-size':
-                    case 'message-font-family':
-                    case 'message-display':
-                    case 'message-margin-top':
-                    case 'message-resize':
-                        // for the textarea
-                        styles[property.replace('message-', '')] = args[2];
-                        console.log(`>>> ${property}: ${args[2]}`);
-                        $('textarea').css(styles);
-                        break;
-
-                    case 'footer-color':
-                    case 'footer-font-size':
-                    case 'footer-font-family':
-                    case 'footer-display':
-                        // for the footer
-                        styles[property.replace('clock-', '')] = args[2];
-                        console.log(`>>> ${property}: ${args[2]}`);
-                        $('#timeBox').css(styles);
-                        break;
-
-                    case 'color':
-                    case 'font-size':
-                    case 'font-family':
-                        // for both the clock and the textarea
-                        styles[property] = args[2];
-                        console.log(`>>> ${property}: ${args[2]}`);
-                        $('#timeBox, textarea').css(styles);
-                        break;
-
-                    case 'done':
-                        // clear the textarea when user is done
-                        $(this).val('');
-                        break;
-
-                    default:
-                        console.log(`${property} isn't a property you can use.`);
-                } // end switch statement
-            } // end '>>>' if statement
+                if(args[1] != 'done') {
+                    styles[args[2]] = args[3];
+                    if(args[1] == '--main') {
+                        // this selector will select #clock and textarea
+                        args[1] = '#clock, textarea';
+                    }
+                    if(args[1] == '--foot') {
+                        // this selector will selector the footer and the paragraph and links in it
+                        args[1] = 'footer, footer p, footer a';
+                    }
+                    $(args[1]).css(styles);
+                } else {
+                    // creates the done command
+                    $(this).val('');
+                }
+                // log the command
+                console.log(lines[i]);
+            }
         }
         /*
         if(splitText[0] == '>>>') {
