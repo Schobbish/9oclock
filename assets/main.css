@@ -26,3 +26,6 @@ footer p, footer a {
 footer a:hover {
    color: #c0c0c0;
 }
+textarea {
+    background-color: transparent;
+}
