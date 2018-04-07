@@ -1,4 +1,3 @@
-/*jshint esversion: 6 */
 $(document).ready(function() {
     /*
     This one has no if statment and can't play the song
@@ -29,29 +28,27 @@ $(document).ready(function() {
     $('textarea').change(function() {
         // get value of textarea
         text = $(this).val();
+        // split at each line
         lines = text.split('\n');
-        // >>> #clock, textarea = font-family: "Times New Roman"
         for(var i = 0; i < lines.length; i++) {
-            // split at first space to see if it's a command
-            var args = lines[i].split(' ', 1);
-
-            // check if command
-            if(args[0] == '>>>') {
+            // check if a command by splitting at the first space
+            if(lines[i].split(' ', 1) == '>>>') {
                 // properties are keys and values are values
                 // this will only ever have one item but it must be done this way
                 var styles = {};
 
-                // Selector and Declaration
-                var sd = lines[i].split(' = ', 2);
-                // take out >>> from the first value of sd and you've got the selector
-                var selector = sd[0].replace('>>> ', '');
-                console.log(sd);
-                console.log(selector);
+                // split at the equals sign to separate the selector from the declaration
+                var selectDeclar = lines[i].split(' = ', 2);
+                // take out >>> from the first value of sd to get the selector
+                var selector = selectDeclar[0].replace('>>> ', '');
 
                 // allows for a done command later
                 if(selector != 'done') {
-                    // assign value to property
-                    styles[args[2]] = args[3];
+                    // split the declaration by the colon to get property and its value
+                    var propVal = selectDeclar[1].split(': ', 2);
+
+                    // assign value to property in dictionary
+                    styles[propVal[0]] = propVal[1];
                     if(selector == '--main') {
                         // this selector will select #clock and textarea
                         selector = '#clock, textarea';
@@ -60,6 +57,7 @@ $(document).ready(function() {
                         // this selector will selector the footer and the paragraph and links in it
                         selector = 'footer, footer p, footer a';
                     }
+                    // use the styles dictionary to set the css
                     $(selector).css(styles);
                 } else {
                     // creates the done command
@@ -69,12 +67,5 @@ $(document).ready(function() {
                 console.log(lines[i]);
             }
         }
-        /*
-        if(splitText[0] == '>>>') {
-            switch(splitText[1]) {
-            case 'background-color':
-
-            };
-        };*/
    });
 });
