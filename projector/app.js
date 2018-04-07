@@ -30,23 +30,20 @@ $(document).ready(function() {
         // get value of textarea
         text = $(this).val();
         lines = text.split('\n');
-
+        // >>> #clock, textarea = font-family: "Times New Roman"
         for(var i = 0; i < lines.length; i++) {
-            // split the line into words but not the value part because there
-            // are multi-word values
-            // args[1] = selector; args[2] = property; args[3] = value
-            var args = lines[i].split(' ', 3);
-            // grab what's after the point where it stopped splitting
-            // this will be the value of the property
-            var leftovers = lines[i].replace(args.join(' ') + ' ', '');
-            args.push(leftovers);
-            // remove the colon from the property
-            args[2] = args[2].replace(':', '');
+            // split at first space to see if it's a command
+            var args = lines[i].split(' ', 1);
 
-            // properties are keys and values are values
-            var styles = {};
+            // check if command
             if(args[0] == '>>>') {
+                // properties are keys and values are values
+                // this will only ever have one item but it must be done this way
+                var styles = {};
+
+                // allows for a done command later
                 if(args[1] != 'done') {
+                    // assign value to property
                     styles[args[2]] = args[3];
                     if(args[1] == '--main') {
                         // this selector will select #clock and textarea
