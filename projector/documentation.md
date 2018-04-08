@@ -7,8 +7,43 @@ The projector mode is made to display only a clock on a projector or other displ
 - **It's highly customizable through commands.** You can change the look of the website through CSS-style commands. This will be described in detail in the next section.
 
 ## Commands
-The syntax is like this: 
+The syntax is like this:
 ```
->>> <selector> { <property>: <value>
+>>> <selector> { <property>: <value>[; <property2>: <value2>] }
 ```
-It's basically like CSS (in fact it uses jQuery's CSS function), except that you currently can only declare one property at a time, and every line is preceded with `>>>`. Notice also that the curly brace doesn't get closed. 
+It's basically like CSS (in fact it uses jQuery's CSS function). You can declare more than one property at a time as long as they're on the same line and separated by semicolons. It is not recommended to put a semicolon after the last declaration. Spaces are important because the script splits the command at spaces. Avoid using colons, semicolons, and curly braces in selectors, properties, and values because the script also uses those characters for splitting.
+
+Here are some useful selectors:
+| Selector                 | Description                       |
+| :----------------------- | :-------------------------------- |
+| `body`                   | Use this to change the background |
+| `#clock` or `h1`         | Selects the clock                 |
+| `#message` or `textarea` | Selects the text box              |
+| `footer`                 | Selects the footer                |
+
+There are also some special selectors:
+| Selector | Description                                                       |
+| :------- | :---------------------------------------------------------------- |
+| `--main` | Selects the clock and the text box                                |
+| `--foot` | Selects the footer, the paragraph in it, and the links in the paragraph |
+| `done`   | Clears the text box (helpful when copying and pasting commands)   |
+
+### Examples
+Hide the footer (basic example)
+```
+>>> footer { display: none }
+```
+
+Make the clock bigger then clear (`done` example)
+```
+>>> #clock { font-size: 200px }
+>>> done
+```
+
+Change the colors to mimic the original website (multi-line example)
+```
+>>> body { background-color: #ffffff }
+>>> #clock { color: #000000 }
+>>> --foot { color: #dcdcdc }
+>>> done
+```
