@@ -14,6 +14,7 @@ The syntax is like this:
 It's basically like CSS (in fact it uses jQuery's CSS function). You can declare more than one property at a time as long as they're on the same line and separated by semicolons. It is not recommended to put a semicolon after the last declaration. Spaces are important because the script splits the command at spaces. Avoid using colons, semicolons, and curly braces in selectors, properties, and values because the script also uses those characters for splitting.
 
 Here are some useful selectors:
+
 | Selector                 | Description                       |
 | :----------------------- | :-------------------------------- |
 | `body`                   | Use this to change the background |
@@ -22,6 +23,7 @@ Here are some useful selectors:
 | `footer`                 | Selects the footer                |
 
 There are also some special selectors:
+
 | Selector | Description                                                       |
 | :------- | :---------------------------------------------------------------- |
 | `--main` | Selects the clock and the text box                                |
