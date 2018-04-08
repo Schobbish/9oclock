@@ -23,8 +23,8 @@ $(document).ready(function() {
                 // this will only ever have one item but it must be done this way
                 var styles = {};
 
-                // split at the equals sign to separate the selector from the declaration
-                var selectDeclar = lines[i].split(' = ', 2);
+                // split at the curly brace to separate the selector from the declaration
+                var selectDeclar = lines[i].split(' { ', 2);
                 // take out >>> from the first value of sd to get the selector
                 var selector = selectDeclar[0].replace('>>> ', '');
 
