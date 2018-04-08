@@ -12,6 +12,9 @@ $(document).ready(function() {
 
     // for commands in the textarea
     $('textarea').change(function() {
+        /* TEST COMMAND:
+>>> h1 { color: red; font-family: "Times New Roman; font-size: 16 }
+        */
         // get value of textarea
         text = $(this).val();
         // split at each line
