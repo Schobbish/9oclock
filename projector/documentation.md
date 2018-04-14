@@ -29,6 +29,7 @@ There are also some special selectors:
 | `--main` | Selects the clock and the text box                                |
 | `--foot` | Selects the footer, the paragraph in it, and the links in the paragraph |
 | `done`   | Clears the text box (helpful when copying and pasting commands)   |
+| `verbose please` | Logs more stuff in the console (can't be turned off afterwards) |
 
 ### Examples
 Hide the footer (basic example)
