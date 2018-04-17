@@ -22,7 +22,7 @@ $(document).ready(function() {
 
         for(var i = 0; i < lines.length; i++) {
             // check if a command by splitting at the first space
-            if(lines[i].split(' ', 1) == '>>>') {
+            if(lines[i].split(' ', 1) == '>>') {
                 // properties are keys and values are values
                 var styles = {};
                 // split at the curly brace to separate the selector from the declaration
