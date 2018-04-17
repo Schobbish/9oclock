@@ -28,7 +28,7 @@ $(document).ready(function() {
                 // split at the curly brace to separate the selector from the declaration
                 var selectDeclar = lines[i].split(' { ', 2);
                 // take out >>> from the first value of sd to get the selector
-                var selector = selectDeclar[0].replace('>>> ', '');
+                var selector = selectDeclar[0].replace('>> ', '');
 
                 // allows for a done command later
                 switch(selector) {
