@@ -10,10 +10,10 @@ $(document).ready(function() {
     // for commands in the textarea
     $('textarea').change(function() {
         /* TEST COMMANDS:
->>> verbose please
->>> h1 { color: red; font-family: "Trebuchet MS"; font-size: 32px; }
->>> --foot { display: none }
->>> done
+>> verbose please
+>> h1 { color: red; font-family: "Trebuchet MS"; font-size: 32px; }
+>> --foot { display: none }
+>> done
         */
         // get value of textarea
         text = $(this).val();
