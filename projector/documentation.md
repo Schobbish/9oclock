@@ -42,6 +42,11 @@ Make the clock bigger then clear (`done` example)
 >> #clock { font-size: 200px }
 >> done
 ```
+Set the background to an image (multi property example)
+```
+>> body { background-image: url("https://i.imgur.com/Uyzdxlu.gif"); background-repeat: no-repeat; background-position: center center }
+>> done
+```
 
 Change the colors to mimic the original website (multi-line example)
 ```
