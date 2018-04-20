@@ -2,7 +2,7 @@ body {
    /*background-image: url("https://i.imgur.com/Qx3Rg38.jpg");*/
    background-color: #000000;
 }
-#main * {
+#main *, textarea {
    color: #ffffff;
 }
 footer p, footer a {

@@ -1,11 +1,18 @@
+/*jshint esversion: 6*/
 $(document).ready(function() {
-    var d;
+    class Clock {
+        constructor() {
+            $('#main').append('<h1 id="clock"></h1>');
+        }
+        update() {
+            var d = new Date();
+            $('#clock').html(d.toLocaleTimeString('en-us'));
+            return 0;
+        }
+    }
+    var clock = new Clock();
+    var timer, stopwatch;
     var verbose = false;
-    // this will run fifty times a second (for accuracy)
-    setInterval(function() {
-        d = new Date();
-        $('#clock').html(d.toLocaleTimeString('en-us'));
-    }, 20);
 
     // for commands in the textarea
     $('textarea').change(function() {
@@ -20,9 +27,9 @@ $(document).ready(function() {
         // split at each line
         lines = text.split('\n');
 
-        for(var i = 0; i < lines.length; i++) {
+        for (var i = 0; i < lines.length; i++) {
             // check if a command by splitting at the first space
-            if(lines[i].split(' ', 1) == '>>') {
+            if (lines[i].split(' ', 1) == '>>') {
                 // properties are keys and values are values
                 var styles = {};
                 // split at the curly brace to separate the selector from the declaration
@@ -48,7 +55,7 @@ $(document).ready(function() {
                         declars[lastDeclar] = declars[lastDeclar].replace(' }', '');
 
                         // for every declaration...
-                        for(var j = 0; j < declars.length; j++) {
+                        for (var j = 0; j < declars.length; j++) {
                             // split the declaration by the colon to get property and its value
                             var propVal = declars[j].split(': ', 2);
                             // assign value to property in dictionary
@@ -56,16 +63,16 @@ $(document).ready(function() {
                         }
 
                         // handle special selectors
-                        if(selector == '--main') {
-                            selector = '#clock, textarea';
+                        if (selector == '--main') {
+                            selector = '#main *, textarea';
                         }
-                        if(selector == '--foot') {
+                        if (selector == '--foot') {
                             selector = 'footer, footer p, footer a';
                         }
-                        if(verbose) {
+                        if (verbose) {
                             console.log('selector: ' + selector);
                             var counter = 0;
-                            for(var property in styles) {
+                            for (var property in styles) {
                                 counter++;
                                 console.log('property' + counter + ': ' + property);
                                 console.log('   value' + counter + ': ' + styles[property]);
@@ -76,11 +83,23 @@ $(document).ready(function() {
                 }
                 // log the command
                 console.log(lines[i]);
-                if(verbose) {
+                if (verbose) {
                     // add extra line for readibilty
                     console.log('\n');
                 }
             }
         }
-   });
+    });
+    // this will run fifty times a second (for accuracy)
+    setInterval(function() {
+        if (clock) {
+            clock.update();
+        }
+        if (timer) {
+
+        }
+        if (stopwatch) {
+
+        }
+    }, 20);
 });
