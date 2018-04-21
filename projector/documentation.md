@@ -18,7 +18,7 @@ Here are some useful selectors:
 | Selector                 | Description                       |
 | :----------------------- | :-------------------------------- |
 | `body`                   | Use this to change the background |
-| `#clock` or `h1`         | Selects the clock                 |
+| `.clock`                 | Selects the clock                 |
 | `#message` or `textarea` | Selects the text box              |
 | `footer`                 | Selects the footer                |
 
