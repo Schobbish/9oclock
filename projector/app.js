@@ -1,4 +1,8 @@
 /*jshint esversion: 6*/
+/* TODO:
+ * Stopwatch - translate miliseconds to an actual time
+ * Timer - ?? create countdown??
+ */
 $(document).ready(function() {
     class Clock {
         constructor() {
