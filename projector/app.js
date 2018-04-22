@@ -6,7 +6,6 @@
 $(document).ready(function() {
     class Clock {
         constructor() {
-            $('.clock').remove();
             $('#main').append(`<h1 class="clock" id="object${objectCounter}"></h1>`);
             this.objectID = objectCounter;
             objectCounter++;
@@ -23,7 +22,6 @@ $(document).ready(function() {
     }
     class Timer {
         constructor(duration) {
-            $('.timer').remove();
             $('#main').append(`<h1 class="timer" id="object${objectCounter}"></h1>`);
             this.objectID = objectCounter;
             this.creationTime = new Date();
@@ -36,7 +34,6 @@ $(document).ready(function() {
     }
     class Stopwatch {
         constructor() {
-            $('.stopwatch').remove();
             $('#main').append(`<h1 class="stopwatch" id="object${objectCounter}"></h1>`);
             this.objectID = objectCounter;
             this.creationTime = Date.now();
@@ -52,8 +49,8 @@ $(document).ready(function() {
         }
     }
     var objectCounter = 0;
-    var clock = new Clock();
-    var timer, stopwatch;
+    var clocks = [new Clock()];
+    var timers, stopwatches = [];
     var verbose = false;
 
     // for commands in the textarea
@@ -72,37 +69,35 @@ $(document).ready(function() {
         for (var i = 0; i < lines.length; i++) {
             // check if a command by splitting at the first space
             if (lines[i].split(' ', 1) == '>>') {
-                // take out >>
+                // take out >>; the current command
                 var command = lines[i].replace('>> ', '');
-                var firstWord = command.split(' ', 1);
-                var selectedObject = command.split(' ', 2)[1];
+                // words in current command
+                var words = command.split(' ');
+                var selectedObject = words[1];
 
-                switch (firstWord[0]) {
+                switch (words[0]) {
                     case 'done':
                         $(this).val('');
                         break;
                     case 'verbose':
-                        if (command.split(' ', 2)[1] == 'please') {
+                        if (words[1] == 'please') {
                             verbose = true;
                             console.log('verbose mode is on');
                         }
                         break;
                     case 'delete':
-                        switch (selectedObject) {
+                        switch (words[1]) {
                             case 'footer':
                                 $('footer').hide();
                                 break;
                             case 'clock':
-                                clock.remove();
-                                clock = null;
+
                                 break;
                             case 'timer':
-                                timer.remove();
-                                timer = null;
+
                                 break;
                             case 'stopwatch':
-                                stopwatch.remove();
-                                stopwatch = null;
+
                                 break;
                             default:
                                 console.warn(selectedObject + ' is not an object you can delete');
@@ -114,13 +109,13 @@ $(document).ready(function() {
                                 $('footer').show();
                                 break;
                             case 'clock':
-                                clock = new Clock();
+                                clocks.push(new Clock());
                                 break;
                             case 'timer':
-                                timer = new Timer(command.split(' ', 3)[2]);
+                                timers.push(new Timer(words[2]));
                                 break;
                             case 'stopwatch':
-                                stopwatch = new Stopwatch();
+                                stopwatches.push(new Stopwatch());
                                 break;
                             default:
                                 console.warn(selectedObject + ' is not an object you can create');
@@ -128,6 +123,8 @@ $(document).ready(function() {
                         break;
 
                     default:
+                        // for styling
+
                         // properties are keys and values are values
                         var styles = {};
                         // split at the curly brace to separate the selector from the declaration
@@ -175,14 +172,20 @@ $(document).ready(function() {
     });
     // this will run fifty times a second (for accuracy)
     setInterval(function() {
-        if (clock) {
-            clock.update();
+        if (clocks) {
+            for (var i = 0; i < clocks.length; i++) {
+                clocks[i].update();
+            }
         }
-        if (timer) {
-
+        if (timers) {
+            for (var ii = 0; ii < timers.length; ii++) {
+                timers[ii].update();
+            }
         }
-        if (stopwatch) {
-            stopwatch.update();
+        if (stopwatches) {
+            for (var iii = 0; iii < stopwatches.length; iii++) {
+                stopwatches[iii].update();
+            }
         }
     }, 10);
 });
