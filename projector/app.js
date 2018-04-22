@@ -15,10 +15,6 @@ $(document).ready(function() {
             $(`#object${this.objectID}`).html(this.d.toLocaleTimeString('en-us'));
             return this.d;
         }
-        remove() {
-            $(`#object${this.objectID}`).remove();
-        }
-
     }
     class Timer {
         constructor(duration) {
@@ -27,9 +23,6 @@ $(document).ready(function() {
             this.creationTime = new Date();
             this.duration = duration;
             objectCounter++;
-        }
-        remove() {
-            $(`#object${this.objectID}`).remove();
         }
     }
     class Stopwatch {
@@ -44,21 +37,23 @@ $(document).ready(function() {
             this.duration = new Date(2000, 0, 0, 0, 0, 0, this.d - this.creationTime);
             $(`#object${this.objectID}`).html();
         }
-        remove() {
-            $(`#object${this.objectID}`).remove();
-        }
+    }
+    function remove(index) {
+        var idOfObject = objects[index].objectID;
+        $(`#object${idOfObject}`).remove();
+        objects.splice(index, 1);
+        return 0;
     }
     var objectCounter = 0;
-    var clocks = [new Clock()];
-    var timers, stopwatches = [];
+    var objects = [new Clock()];
     var verbose = false;
-
     // for commands in the textarea
     $('textarea').change(function() {
         /* TEST COMMANDS:
 >> verbose please
 >> h1 { color: red; font-family: "Trebuchet MS"; font-size: 32px; }
 >> --foot { display: none }
+>> create clock
 >> done
         */
         // get value of textarea
@@ -73,7 +68,6 @@ $(document).ready(function() {
                 var command = lines[i].replace('>> ', '');
                 // words in current command
                 var words = command.split(' ');
-                var selectedObject = words[1];
 
                 switch (words[0]) {
                     case 'done':
@@ -86,39 +80,24 @@ $(document).ready(function() {
                         }
                         break;
                     case 'delete':
-                        switch (words[1]) {
-                            case 'footer':
-                                $('footer').hide();
-                                break;
-                            case 'clock':
-
-                                break;
-                            case 'timer':
-
-                                break;
-                            case 'stopwatch':
-
-                                break;
-                            default:
-                                console.warn(selectedObject + ' is not an object you can delete');
-                        }
+                        remove(words[1]);
                         break;
                     case 'create':
-                        switch (selectedObject) {
+                        switch (words[1]) {
                             case 'footer':
                                 $('footer').show();
                                 break;
                             case 'clock':
-                                clocks.push(new Clock());
+                                objects.push(new Clock());
                                 break;
                             case 'timer':
-                                timers.push(new Timer(words[2]));
+                                objects.push(new Timer(words[2]));
                                 break;
                             case 'stopwatch':
-                                stopwatches.push(new Stopwatch());
+                                objects.push(new Stopwatch());
                                 break;
                             default:
-                                console.warn(selectedObject + ' is not an object you can create');
+                                console.warn(words[1] + ' is not an object you can create');
                         }
                         break;
 
@@ -132,8 +111,9 @@ $(document).ready(function() {
                         // split into individual declarations
                         var declars = selectDeclar[1].split('; ');
                         // take off curly brace from the last declaration
-                        var lastDeclar = declars.length - 1;
-                        declars[lastDeclar] = declars[lastDeclar].replace(' }', '');
+                        // (probably not needed)
+                        //var lastDeclar = declars.length - 1;
+                        //declars[lastDeclar] = declars[lastDeclar].replace(' }', '');
 
                         // for every declaration...
                         for (var j = 0; j < declars.length; j++) {
@@ -172,19 +152,9 @@ $(document).ready(function() {
     });
     // this will run fifty times a second (for accuracy)
     setInterval(function() {
-        if (clocks) {
-            for (var i = 0; i < clocks.length; i++) {
-                clocks[i].update();
-            }
-        }
-        if (timers) {
-            for (var ii = 0; ii < timers.length; ii++) {
-                timers[ii].update();
-            }
-        }
-        if (stopwatches) {
-            for (var iii = 0; iii < stopwatches.length; iii++) {
-                stopwatches[iii].update();
+        if (objects) {
+            for (var i = 0; i < objects.length; i++) {
+                objects[i].update();
             }
         }
     }, 10);
