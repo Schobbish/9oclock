@@ -115,9 +115,8 @@ $(document).ready(function() {
                         // split into individual declarations
                         var declars = selectDeclar[1].split('; ');
                         // take off curly brace from the last declaration
-                        // (probably not needed)
-                        //var lastDeclar = declars.length - 1;
-                        //declars[lastDeclar] = declars[lastDeclar].replace(' }', '');
+                        var lastDeclar = declars.length - 1;
+                        declars[lastDeclar] = declars[lastDeclar].replace(' }', '');
 
                         // for every declaration...
                         for (var j = 0; j < declars.length; j++) {
