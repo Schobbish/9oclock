@@ -6,12 +6,12 @@ $(document).ready(function() {
    // this will run fifty times a second (for accuracy)
    setInterval(function() {
       d = new Date();
-      $('#clock').html(d.toLocaleTimeString('en-us'));
+      $('.clock').html(d.toLocaleTimeString('en-us'));
 
       if(d.getDay() == 6) {
-         $('#day').html('Today is Saturday');
+         $('.day').html('Today is Saturday');
       } else {
-         $('#day').html('Today is Not Saturday');
+         $('.day').html('Today is Not Saturday');
       }
       // if saturday and exactly at 9:00:00 (am or pm)
       // correct if statement:
