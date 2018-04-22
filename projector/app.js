@@ -2,60 +2,64 @@
 /* TODO:
  * Stopwatch - translate miliseconds to an actual time
  * Timer - ?? create countdown??
- */
-$(document).ready(function() {
-    class Clock {
-        constructor() {
-            $('#main').append(`<h1 class="clock" id="object${objectCounter}"></h1>`);
-            this.objectID = objectCounter;
-            objectCounter++;
-        }
-        update() {
-            this.d = new Date();
-            $(`#object${this.objectID}`).html(this.d.toLocaleTimeString('en-us'));
-            return this.d;
-        }
-    }
-    class Timer {
-        constructor(duration) {
-            $('#main').append(`<h1 class="timer" id="object${objectCounter}"></h1>`);
-            this.objectID = objectCounter;
-            this.creationTime = new Date();
-            this.duration = duration;
-            objectCounter++;
-        }
-    }
-    class Stopwatch {
-        constructor() {
-            $('#main').append(`<h1 class="stopwatch" id="object${objectCounter}"></h1>`);
-            this.objectID = objectCounter;
-            this.creationTime = Date.now();
-            objectCounter++;
-        }
-        update() {
-            this.d = new Date();
-            this.duration = new Date(2000, 0, 0, 0, 0, 0, this.d - this.creationTime);
-            $(`#object${this.objectID}`).html();
-        }
-    }
-    function remove(index) {
-        var idOfObject = objects[index].objectID;
-        $(`#object${idOfObject}`).remove();
-        objects.splice(index, 1);
-        return 0;
-    }
-    var objectCounter = 0;
-    var objects = [new Clock()];
-    var verbose = false;
-    // for commands in the textarea
-    $('textarea').change(function() {
-        /* TEST COMMANDS:
+ * Put stuff that doesn't need to be in the doc ready function outside it
+ * DRY stuff
+ *
+ * TEST COMMANDS:
 >> verbose please
 >> h1 { color: red; font-family: "Trebuchet MS"; font-size: 32px; }
 >> --foot { display: none }
 >> create clock
 >> done
-        */
+**/
+class Clock {
+    constructor() {
+        $('#main').append(`<h1 class="clock" id="object${objectCounter}"></h1>`);
+        this.objectID = objectCounter;
+        objectCounter++;
+    }
+    update() {
+        this.d = new Date();
+        $(`#object${this.objectID}`).html(this.d.toLocaleTimeString('en-us'));
+        return this.d;
+    }
+}
+class Timer {
+    constructor(duration) {
+        $('#main').append(`<h1 class="timer" id="object${objectCounter}"></h1>`);
+        this.objectID = objectCounter;
+        this.creationTime = new Date();
+        this.duration = duration;
+        objectCounter++;
+    }
+}
+class Stopwatch {
+    constructor() {
+        $('#main').append(`<h1 class="stopwatch" id="object${objectCounter}"></h1>`);
+        this.objectID = objectCounter;
+        this.creationTime = Date.now();
+        objectCounter++;
+    }
+    update() {
+        this.d = new Date();
+        this.duration = new Date(2000, 0, 0, 0, 0, 0, this.d - this.creationTime);
+        $(`#object${this.objectID}`).html();
+    }
+}
+function remove(index) {
+    var idOfObject = objects[index].objectID;
+    $(`#object${idOfObject}`).remove();
+    objects.splice(index, 1);
+    return 0;
+}
+var objectCounter = 0;
+var objects = [new Clock()];
+var verbose = false;
+
+
+$(document).ready(function() {
+    // for commands in the textarea
+    $('textarea').change(function() {
         // get value of textarea
         text = $(this).val();
         // split at each line
