@@ -55,3 +55,11 @@ Change the colors to mimic the original website (multi-line example)
 >> --foot { color: #dcdcdc }
 >> done
 ```
+
+There's no need to be upset
+```
+>> textarea { background: #000000 url("https://i.imgur.com/Uyzdxlu.gif") no-repeat top center }
+>> h1 { font-size: 150px }
+>> --foot { display: none }
+>> done
+```
