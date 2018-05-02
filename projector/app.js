@@ -46,10 +46,11 @@ class Stopwatch {
         $(`#object${this.objectID}`).html();
     }
 }
-function remove(index) {
-    var idOfObject = objects[index].objectID;
+// remove an object based on its position in the objects array
+function remove(position) {
+    var idOfObject = objects[position].objectID;
     $(`#object${idOfObject}`).remove();
-    objects.splice(index, 1);
+    objects.splice(position, 1);
     return 0;
 }
 var objectCounter = 0;
