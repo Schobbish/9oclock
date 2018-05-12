@@ -79,9 +79,15 @@ $(document).ready(function() {
                         $(this).val('');
                         break;
                     case 'verbose':
-                        if (words[1] == 'please') {
-                            verbose = true;
-                            console.log('verbose mode is on');
+                        switch (words[1]) {
+                            case 'please':
+                                verbose = true;
+                                console.log('verbose mode is on');
+                                break;
+                            case 'off':
+                                verbose = false;
+                                console.log('verbose mode is off');
+                                break;
                         }
                         break;
                     case 'delete':
@@ -107,7 +113,7 @@ $(document).ready(function() {
                         break;
 
                     default:
-                        // for styling
+                        // for css injection
 
                         // properties are keys and values are values
                         var styles = {};
