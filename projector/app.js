@@ -1,6 +1,5 @@
 /*jshint esversion: 6*/
 /* TODO:
- * Stopwatch - translate miliseconds to an actual time
  * Timer - ?? create countdown??
  * Put stuff that doesn't need to be in the doc ready function outside it
  * DRY stuff
@@ -19,31 +18,75 @@ class Clock {
         objectCounter++;
     }
     update() {
-        this.d = new Date();
-        $(`#object${this.objectID}`).html(this.d.toLocaleTimeString('en-us'));
-        return this.d;
+        $(`#object${this.objectID}`).html(d.toLocaleTimeString('en-us'));
     }
 }
 class Timer {
     constructor(duration) {
         $('#main').append(`<h1 class="timer" id="object${objectCounter}"></h1>`);
         this.objectID = objectCounter;
-        this.creationTime = new Date();
+        this.creationTime = d;
         this.duration = duration;
         objectCounter++;
+    }
+    update() {
+        // do nothing
     }
 }
 class Stopwatch {
     constructor() {
-        $('#main').append(`<h1 class="stopwatch" id="object${objectCounter}"></h1>`);
+        $('#main').append(`<h1 class="stopwatch" id="object${objectCounter}">00:00.00</h1>`);
         this.objectID = objectCounter;
-        this.creationTime = Date.now();
+        // time from the last time the stopwatch was stopped
+        this.leftovers = 0;
+        this.going = false;
+        this.object = document.getElementById(`object${this.objectID}`);
         objectCounter++;
+
+        this.object.addEventListener('mouseup', function() {
+            // get object id
+            var id = $(this).attr('id').slice(6);
+            for (var i = 0; i < objects.length; i++) {
+                // find object with that id
+                if (objects[i].objectID == id) {
+                    // reverse `going` value
+                    if (objects[i].going == true) {
+                        objects[i].pause();
+                    } else {
+                        objects[i].start();
+                    }
+                    break;
+                }
+            }
+        });
+    }
+    start() {
+        // reset beginningTime and start stopwatch
+        this.beginningTime = d;
+        this.going = true;
+    }
+    pause() {
+        // store time and pause stopwatch
+        this.leftovers = d - this.beginningTime + this.leftovers;
+        this.going = false;
     }
     update() {
-        this.d = new Date();
-        this.duration = new Date(2000, 0, 0, 0, 0, 0, this.d - this.creationTime);
-        $(`#object${this.objectID}`).html();
+        if (this.going) {
+            this.duration = new Date(d - this.beginningTime + this.leftovers);
+            // add zero padding first
+            this.hours = this.duration.getUTCHours().toString().padStart(2, 0);
+            this.minutes = this.duration.getUTCMinutes().toString().padStart(2, 0);
+            this.seconds = this.duration.getUTCSeconds().toString().padStart(2, 0);
+            // i only want two digits for milliseconds
+            this.milliseconds = this.duration.getUTCMilliseconds().toString().padStart(3, 0).slice(0, 2);
+            if (this.duration.getUTCHours() > 0) {
+                // change format when over an hour
+                this.output = `${this.hours}:${this.minutes}:${this.seconds}`;
+            } else {
+                this.output = `${this.minutes}:${this.seconds}.${this.milliseconds}`;
+            }
+            $(`#object${this.objectID}`).html(this.output);
+        }
     }
 }
 // remove an object based on its position in the objects array
@@ -53,10 +96,10 @@ function remove(position) {
     objects.splice(position, 1);
     return 0;
 }
+var d;
 var objectCounter = 0;
 var objects = [new Clock()];
 var verbose = false;
-
 
 $(document).ready(function() {
     // for commands in the textarea
@@ -162,6 +205,7 @@ $(document).ready(function() {
     });
     // this will run fifty times a second (for accuracy)
     setInterval(function() {
+        d = new Date();
         if (objects) {
             for (var i = 0; i < objects.length; i++) {
                 objects[i].update();
