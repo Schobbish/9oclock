@@ -74,7 +74,7 @@ class Stopwatch {
         if (this.going) {
             this.duration = new Date(d - this.beginningTime + this.leftovers);
             // add zero padding first
-            this.hours = this.duration.getUTCHours().toString().padStart(2, 0);
+            this.hours = this.duration.getUTCHours().toString();
             this.minutes = this.duration.getUTCMinutes().toString().padStart(2, 0);
             this.seconds = this.duration.getUTCSeconds().toString().padStart(2, 0);
             // i only want two digits for milliseconds
