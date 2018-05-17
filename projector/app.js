@@ -1,5 +1,7 @@
 /*jshint esversion: 6*/
 /* TODO:
+ * Make timer/stopwatch correctly display times above 23:59:59
+ * Update documentation
  * Put stuff that doesn't need to be in the doc ready function outside it
  * DRY stuff
  *
@@ -8,6 +10,8 @@
 >> h1 { color: red; font-family: "Trebuchet MS"; font-size: 32px; }
 >> --foot { display: none }
 >> create clock
+>> create stopwatch
+>> create timer 01:0:5
 >> done
 **/
 
