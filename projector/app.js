@@ -32,6 +32,7 @@ class Timer {
         this.object = document.getElementById(`object${this.objectID}`);
         this.lastTime = 0;
         this.going = false;
+        this.finished = false;
         objectCounter++;
 
         // parse duration
@@ -63,7 +64,9 @@ class Timer {
     }
     start() {
         this.startTime = d;
-        this.going = true;
+        if (!this.finished) {
+            this.going = true;
+        }
     }
     pause() {
         this.lastTime = d - this.startTime + this.lastTime;
@@ -73,6 +76,12 @@ class Timer {
         if (this.going) {
             this.timeLeft = new Date(this.durationDate.getTime() - (d - this.startTime + this.lastTime));
             $(`#object${this.objectID}`).html(parseDate(this.timeLeft, 'timer'));
+            // this stops the timer about one second late
+            // and on every minute
+            // if (this.timeLeft.getUTCSeconds() == 0) {
+            //     this.finished = true;
+            //     this.going = false;
+            // }
         }
     }
 }
@@ -159,7 +168,7 @@ function remove(position) {
 
 var d;
 var objectCounter = 0;
-var objects = [new Clock(), new Timer('0:4:56'), new Stopwatch()];
+var objects = [new Clock(), new Timer('0:0:5'), new Stopwatch()];
 var verbose = false;
 
 
