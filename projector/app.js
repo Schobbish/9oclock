@@ -103,7 +103,8 @@ var verbose = false;
 
 $(document).ready(function() {
     // for commands in the textarea
-    $('textarea').keypress(function(event) {
+    $('textarea').keyup(function(event) {
+        // keyup feels weird but it won't leave an enter afterwards
         if(event.key == 'Enter') {
             // get value of textarea
             text = $(this).val();
@@ -120,7 +121,6 @@ $(document).ready(function() {
 
                     switch (words[0]) {
                         case 'done':
-                            $(this).val('');
                             $(this).blur();
                             break;
                         case 'verbose':
@@ -202,6 +202,8 @@ $(document).ready(function() {
                         // add extra line for readibilty
                         console.log('\n');
                     }
+                    // clear box for next command
+                    $(this).val('');
                 }
             }
         }
