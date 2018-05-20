@@ -11,6 +11,12 @@ The projector mode is made to display only a clock on a projector or other displ
     1. [Selectors](#selectors)
     2. [Examples](#examples)
 2. [More Commands](#more-commands)
+    1. [`create`](#create-object-options)
+        1. [Examples of `create`](#examples-of-create)
+    2. [`delete`](#delete-index)
+    3. [`done`](#done)
+    4. [`verbose`](#verbose-pleaseoff)
+3. [License](#license)
 
 ## CSS Injection
 You may change the styles of the clock without using an element inspector by typing some CSS into the textarea. This is useful for when you want to reuse styles that you have made previously.
@@ -82,7 +88,7 @@ There's no need to be upset (multi-line example)
 There are additional commands that can create or delete objects, among other utility commands. Remember to type `>>` before each command.
 
 ### `create <object> [options]`
-Creates a new object. `<object>` can be `clock`, `timer`, or `stopwatch`. `create timer` also requires another argument for the duration or the timer, written in the h\:m:s format.
+Creates a new object. `<object>` can be `clock`, `timer`, or `stopwatch`. `create timer` also requires another argument for the duration or the timer, written in the `h:m:s` format.
 
 #### Examples of `create`
 Create a stopwatch
@@ -105,4 +111,4 @@ Blurs the textarea. On most browsers, this means that you are no longer typing i
 Turns verbose mode on or off. `verbose please` turns on verbose mode, while `verbose off` turns it off.
 
 ## License
-This whole repository is licensed under the MIT License. The content on the website itself is licensed under a Creative Commons Attribution 4.0 International License. 
+This whole repository is licensed under the MIT License. The content on the website itself is licensed under a Creative Commons Attribution 4.0 International License.
