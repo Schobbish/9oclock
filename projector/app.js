@@ -87,13 +87,12 @@ class Timer {
                 // stop timer
                 this.finished = true;
                 this.going = false;
-                // change color to red (by default)
+
                 $(`#object${this.objectID}`).addClass('finished');
-                if (finishedStyles.color) {
-                    $(`#object${this.objectID}`).css(finishedStyles);
-                } else {
+                $('.finished').css(finishedStyles);
+                // change color to red if not specified
+                if (!finishedStyles.color)
                     $(`#object${this.objectID}`).css('color', '#ff0000');
-                }
                 if (verbose)
                     console.log(`the timer #object${this.objectID} has ended.`);
             } else {
@@ -286,9 +285,10 @@ $(document).ready(function() {
                                 }
                             }
                             if (selectDeclar[0] == '--finished') {
-                                finishedStyles = styles;
+                                finishedStyles = Object.assign(finishedStyles, styles);
                                 if (verbose)
                                     console.log('styles saved for when a timer is finished');
+                                $('.finished').css(styles);
                             } else {
                                 $(selectDeclar[0]).css(styles);
                             }
