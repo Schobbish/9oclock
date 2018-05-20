@@ -141,7 +141,7 @@ class Stopwatch {
         // store time and pause stopwatch
         this.lastTime = d - this.startTime + this.lastTime;
         this.going = false;
-        // lower interval so that computer runs better (~60% better on my computer!)
+        // slower interval so that computer runs better (~60% better on my computer!)
         // if there are other stopwatches going interval will go back up
         interval = 50;
     }
@@ -165,6 +165,7 @@ function parseDate(date, mode) {
     if (date.getUTCHours() > 0) {
         // change format when over an hour
         output = `${hours}:${minutes}:${seconds}`;
+        // enforce slower interval (this sometimes makes milliseconds look weird)
         interval = 50;
     } else {
         // stopwatch: with milliseconds; timer: without milliseconds

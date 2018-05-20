@@ -13,7 +13,7 @@ The projector mode is made to display only a clock on a projector or other displ
 2. [More Commands](#more-commands)
 
 ## CSS Injection
-You may change the styles of the clock without using an element inspector by typing some CSS into the text area. This is useful for when you want to reuse styles that you have made previously.
+You may change the styles of the clock without using an element inspector by typing some CSS into the textarea. This is useful for when you want to reuse styles that you have made previously.
 
 The syntax is like this:
 ```
@@ -95,5 +95,14 @@ Create a 12 minute and 30 second timer
 >> create timer 0:12:30
 ```
 
+### `delete <index>`
+Deletes object at index `<index>`. There is an list of all the active objects on the page that is zero-indexed, so `delete 0` will delete the first object (by default, the clock).
+
 ### `done`
-Blurs the textarea. On most browsers, this means that you are no longer typing in the textarea and the blue border goes away.
+Blurs the textarea. On most browsers, this means that you are no longer typing in the textarea and the blue border goes away. There are no additional arguments to this command.
+
+### `verbose <please|off>`
+Turns verbose mode on or off. `verbose please` turns on verbose mode, while `verbose off` turns it off.
+
+## License
+This whole repository is licensed under the MIT License. The content on the website itself is licensed under a Creative Commons Attribution 4.0 International License. 
