@@ -21,7 +21,3 @@ textarea {
    font-size: 100px;
    font-weight: 300;
 }
-/* for finished timers */
-#main .finished {
-    color: #ff0000;
-}

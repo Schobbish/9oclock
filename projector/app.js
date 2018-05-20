@@ -2,7 +2,7 @@
 /* TODO:
  * Make timer/stopwatch correctly display times above 23:59:59
  * previous command shortcut
- * be able to change .finished before timer ends
+ * update css command
  * Update documentation
  * Put stuff that doesn't need to be in the doc ready function outside it
  * DRY stuff
@@ -10,10 +10,10 @@
  * TEST COMMANDS:
 >> verbose please
 >> h1 { color: red; font-family: "Trebuchet MS"; font-size: 32px; }
->> --foot { display: none }
+>> --finished { color: blue }
 >> create clock
 >> create stopwatch
->> create timer 01:0:5
+>> create timer 00:1:5
 >> done
 **/
 
@@ -89,6 +89,13 @@ class Timer {
                 this.going = false;
                 // change color to red (by default)
                 $(`#object${this.objectID}`).addClass('finished');
+                if (finishedStyles.color) {
+                    $(`#object${this.objectID}`).css(finishedStyles);
+                } else {
+                    $(`#object${this.objectID}`).css('color', '#ff0000');
+                }
+                if (verbose)
+                    console.log(`the timer #object${this.objectID} has ended.`);
             } else {
                 // update timer normally
                 $(`#object${this.objectID}`).html(parseDate(this.timeLeft, 'timer'));
@@ -179,8 +186,10 @@ function remove(position) {
 
 var d;
 var objectCounter = 0;
-var objects = [new Clock(), new Timer('0:0:5'), new Stopwatch()];
+var objects = [new Clock()];
 var verbose = false;
+// styles for .finished; applied when a timer finishes
+var finishedStyles = {};
 
 
 $(document).ready(function() {
@@ -276,7 +285,13 @@ $(document).ready(function() {
                                     console.log('   value' + counter + ': ' + styles[property]);
                                 }
                             }
-                            $(selectDeclar[0]).css(styles);
+                            if (selectDeclar[0] == '--finished') {
+                                finishedStyles = styles;
+                                if (verbose)
+                                    console.log('styles saved for when a timer is finished');
+                            } else {
+                                $(selectDeclar[0]).css(styles);
+                            }
                     }
                     // log the command
                     console.log(lines[i]);
