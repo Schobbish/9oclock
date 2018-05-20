@@ -1,6 +1,8 @@
 /*jshint esversion: 6*/
 /* TODO:
  * Make timer/stopwatch correctly display times above 23:59:59
+ * previous command shortcut
+ * be able to change .finished before timer ends
  * Update documentation
  * Put stuff that doesn't need to be in the doc ready function outside it
  * DRY stuff
@@ -45,7 +47,7 @@ class Timer {
         this.durationHours = parseInt(this.durationNumbers[0]);
         this.durationMinutes = parseInt(this.durationNumbers[1]);
         this.durationSeconds = parseInt(this.durationNumbers[2]);
-        this.durationDate = new Date(Date.UTC(0, 0, 0, this.durationHours, this.durationMinutes, this.durationSeconds));
+        this.durationDate = new Date(Date.UTC(70, 0, 1, this.durationHours, this.durationMinutes, this.durationSeconds, 0));
 
         $(`#object${this.objectID}`).html(parseDate(this.durationDate, 'timer'));
 
@@ -68,6 +70,7 @@ class Timer {
     }
     start() {
         this.startTime = d;
+        // prevents the timer from starting again once finished
         if (!this.finished) {
             this.going = true;
         }
@@ -79,13 +82,17 @@ class Timer {
     update() {
         if (this.going) {
             this.timeLeft = new Date(this.durationDate.getTime() - (d - this.startTime + this.lastTime));
-            $(`#object${this.objectID}`).html(parseDate(this.timeLeft, 'timer'));
-            // this stops the timer about one second late
-            // and on every minute
-            // if (this.timeLeft.getUTCSeconds() == 0) {
-            //     this.finished = true;
-            //     this.going = false;
-            // }
+            // check if there's any time left
+            if (this.timeLeft.getTime() < 0) {
+                // stop timer
+                this.finished = true;
+                this.going = false;
+                // change color to red (by default)
+                $(`#object${this.objectID}`).addClass('finished');
+            } else {
+                // update timer normally
+                $(`#object${this.objectID}`).html(parseDate(this.timeLeft, 'timer'));
+            }
         }
     }
 }
