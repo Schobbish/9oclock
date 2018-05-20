@@ -141,6 +141,9 @@ class Stopwatch {
         // store time and pause stopwatch
         this.lastTime = d - this.startTime + this.lastTime;
         this.going = false;
+        // lower interval so that computer runs better (~60% better on my computer!)
+        // if there are other stopwatches going interval will go back up
+        interval = 50;
     }
     update() {
         if (this.going) {
@@ -162,9 +165,12 @@ function parseDate(date, mode) {
     if (date.getUTCHours() > 0) {
         // change format when over an hour
         output = `${hours}:${minutes}:${seconds}`;
+        interval = 50;
     } else {
         // stopwatch: with milliseconds; timer: without milliseconds
         if (mode == 'stopwatch') {
+            // keep interval at 10 to show accurate milliseconds
+            interval = 10;
             // i only want two digits for milliseconds
             var milliseconds = date.getUTCMilliseconds().toString().padStart(3, 0).slice(0, 2);
             output = `${minutes}:${seconds}.${milliseconds}`;
@@ -189,6 +195,7 @@ var objects = [new Clock()];
 var verbose = false;
 // styles for .finished; applied when a timer finishes
 var finishedStyles = {};
+var interval = 50;
 
 
 $(document).ready(function() {
@@ -306,13 +313,16 @@ $(document).ready(function() {
         }
     });
 
-    // this will run one hundred times a second (for accuracy)
-    setInterval(function() {
+    // this is like setInterval except the interval can be changed
+    function intervalFunct() {
         d = new Date();
         if (objects) {
             for (var i = 0; i < objects.length; i++) {
                 objects[i].update();
             }
         }
-    }, 10);
+        // recursive
+        setTimeout(intervalFunct, interval);
+    }
+    setTimeout(intervalFunct, interval);
 });
