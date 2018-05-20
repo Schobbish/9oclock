@@ -2,15 +2,18 @@ body {
    /* to actually resize text on ios */
    -webkit-text-size-adjust: 100%;
 }
-#main * {
+#main *, textarea {
    text-align: center;
    font-family: 'Muli', sans-serif;
+   background-color: transparent;
 }
-#clock {
+.clock, .timer, .stopwatch {
    font-size: 100px;
    font-weight: 300;
    margin-bottom: 10px;
-   cursor: none;
+}
+.clock {
+    cursor: none;
 }
 footer {
    width: 100%;
@@ -25,7 +28,4 @@ footer p, footer a {
 }
 footer a:hover {
    color: #c0c0c0;
-}
-textarea {
-    background-color: transparent;
 }
