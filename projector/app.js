@@ -30,6 +30,47 @@ class Clock {
 }
 
 
+class Countdown {
+    constructor(time) {
+        // time should be a string in the hh:mm:ss format
+        $('#main').append(`<h1 class="countdown" id="object${objectCounter}"></h1>`);
+        this.objectID = objectCounter;
+        this.object = document.getElementById(`object${this.objectID}`);
+        this.finished = false;
+        objectCounter++;
+
+        // parse duration
+        this.targetTime = new Date(d.toDateString() + ' ' + time);
+
+        // add another day if this date already passed
+        if (this.targetTime.getTime() <= d.getTime())
+            this.targetTime.setDate(this.targetTime.getDate() + 1);
+    }
+    update() {
+        if (!this.finished) {
+            this.timeLeft = new Date(this.targetTime.getTime() - d.getTime() + 1000);
+
+            // check if there's still time left
+            if (this.timeLeft.getTime() < 0) {
+                // stop the timer
+                this.finished = true;
+                interval = 50;
+
+                $(`#object${this.objectID}`).addClass('finished');
+                $('.finished').css(finishedStyles);
+                // change color to red if not specified
+                if (!finishedStyles.color)
+                    $(`#object${this.objectID}`).css('color', '#ff0000');
+                if (verbose)
+                    console.log(`the countdown clock #object${this.objectID} has ended.`);
+            } else {
+                $(`#object${this.objectID}`).html(parseDate(this.timeLeft, 'countdown'));
+            }
+        }
+    }
+}
+
+
 class Timer {
     constructor(duration) {
         // duration should be a string in the hh:mm:ss format
@@ -160,25 +201,37 @@ function parseDate(date, mode) {
     var hours = date.getUTCHours().toString();
     var minutes = date.getUTCMinutes().toString().padStart(2, 0);
     var seconds = date.getUTCSeconds().toString().padStart(2, 0);
+    var centiseconds;
     var output;
 
     if (date.getUTCHours() > 0) {
         // change format when over an hour
         output = `${hours}:${minutes}:${seconds}`;
-        // enforce slower interval (this sometimes makes milliseconds look weird)
+        // enforce slower interval (this sometimes makes centiseconds look weird)
         interval = 50;
     } else {
-        // stopwatch: with milliseconds; timer: without milliseconds
+        // stopwatch: with centiseconds; timer: without centiseconds
         if (mode == 'stopwatch') {
-            // keep interval at 10 to show accurate milliseconds
+            // keep interval at 10 to show accurate centiseconds
             interval = 10;
-            // i only want two digits for milliseconds
-            var milliseconds = date.getUTCMilliseconds().toString().padStart(3, 0).slice(0, 2);
-            output = `${minutes}:${seconds}.${milliseconds}`;
+            // i only want two digits for centiseconds
+            centiseconds = date.getUTCMilliseconds().toString().padStart(3, 0).slice(0, 2);
+            output = `${minutes}:${seconds}.${centiseconds}`;
         } else if (mode == 'timer') {
             output = `${minutes}:${seconds}`;
+        } else if (mode == 'countdown') {
+            // show centiseconds if less than one minute to go
+            if (date.getUTCMinutes() <= 0) {
+                interval = 10;
+                centiseconds = date.getUTCMilliseconds().toString().padStart(3, 0).slice(0, 2);
+                output = `${seconds}.${centiseconds}`;
+            } else {
+                output = `${minutes}:${seconds}`;
+            }
         }
     }
+    if (date == 'Invalid Date')
+        output = 'Invalid Date';
     return output;
 }
 
@@ -243,6 +296,9 @@ $(document).ready(function() {
                                     break;
                                 case 'clock':
                                     objects.push(new Clock());
+                                    break;
+                                case 'countdown':
+                                    objects.push(new Countdown(words[2]));
                                     break;
                                 case 'timer':
                                     objects.push(new Timer(words[2]));
