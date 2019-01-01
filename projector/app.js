@@ -51,9 +51,10 @@ class Countdown {
             this.timeLeft = new Date(this.targetTime.getTime() - d.getTime() + 1000);
 
             // check if there's still time left
-            if (this.timeLeft < 0) {
+            if (this.timeLeft.getTime() < 0) {
                 // stop the timer
                 this.finished = true;
+                interval = 50;
 
                 $(`#object${this.objectID}`).addClass('finished');
                 $('.finished').css(finishedStyles);
@@ -63,7 +64,7 @@ class Countdown {
                 if (verbose)
                     console.log(`the countdown clock #object${this.objectID} has ended.`);
             } else {
-                $(`#object${this.objectID}`).html(parseDate(this.timeLeft, 'timer'));
+                $(`#object${this.objectID}`).html(parseDate(this.timeLeft, 'countdown'));
             }
         }
     }
@@ -200,23 +201,33 @@ function parseDate(date, mode) {
     var hours = date.getUTCHours().toString();
     var minutes = date.getUTCMinutes().toString().padStart(2, 0);
     var seconds = date.getUTCSeconds().toString().padStart(2, 0);
+    var centiseconds;
     var output;
 
     if (date.getUTCHours() > 0) {
         // change format when over an hour
         output = `${hours}:${minutes}:${seconds}`;
-        // enforce slower interval (this sometimes makes milliseconds look weird)
+        // enforce slower interval (this sometimes makes centiseconds look weird)
         interval = 50;
     } else {
-        // stopwatch: with milliseconds; timer: without milliseconds
+        // stopwatch: with centiseconds; timer: without centiseconds
         if (mode == 'stopwatch') {
-            // keep interval at 10 to show accurate milliseconds
+            // keep interval at 10 to show accurate centiseconds
             interval = 10;
-            // i only want two digits for milliseconds
-            var milliseconds = date.getUTCMilliseconds().toString().padStart(3, 0).slice(0, 2);
-            output = `${minutes}:${seconds}.${milliseconds}`;
+            // i only want two digits for centiseconds
+            centiseconds = date.getUTCMilliseconds().toString().padStart(3, 0).slice(0, 2);
+            output = `${minutes}:${seconds}.${centiseconds}`;
         } else if (mode == 'timer') {
             output = `${minutes}:${seconds}`;
+        } else if (mode == 'countdown') {
+            // show centiseconds if less than one minute to go
+            if (date.getUTCMinutes() <= 0) {
+                interval = 10;
+                centiseconds = date.getUTCMilliseconds().toString().padStart(3, 0).slice(0, 2);
+                output = `${seconds}.${centiseconds}`;
+            } else {
+                output = `${minutes}:${seconds}`;
+            }
         }
     }
     if (date == 'Invalid Date')
