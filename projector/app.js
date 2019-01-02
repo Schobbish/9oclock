@@ -20,7 +20,10 @@
 
 class Clock {
     constructor() {
-        $('#main').append(`<h1 class="clock" id="object${objectCounter}"></h1>`);
+        // find timezone name for hover text (don't do hover text for default clocks)
+        var timeZoneName = (new Date()).toLocaleTimeString('en-US', { hour12: "false", timeZoneName: "short" }).split(' ')[2];
+
+        $('#main').append(`<h1 class="clock" id="object${objectCounter}" title="Time zone: ${timeZoneName}"></h1>`);
         this.objectID = objectCounter;
         objectCounter++;
     }
@@ -48,7 +51,7 @@ class Countdown {
     }
     update() {
         if (!this.finished) {
-            this.timeLeft = new Date(this.targetTime.getTime() - d.getTime() + 1000);
+            this.timeLeft = new Date(this.targetTime.getTime() - d.getTime());
 
             // check if there's still time left
             if (this.timeLeft.getTime() < 0) {
