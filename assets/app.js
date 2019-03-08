@@ -48,6 +48,10 @@ class Countdown {
         // add another day if this date already passed
         if (this.targetTime.getTime() <= d.getTime())
             this.targetTime.setDate(this.targetTime.getDate() + 1);
+
+        // create hover text
+        this.targetTimeString = this.targetTime.toLocaleString('en-us', options);
+        $(`#object${this.objectID}`).attr('title', `Ends at ${this.targetTimeString}`);
     }
     update() {
         if (!this.finished) {
@@ -60,7 +64,10 @@ class Countdown {
                 interval = 50;
 
                 $(`#object${this.objectID}`).addClass('finished');
+                $(`#object${this.objectID}`).attr('title', `Ended at ${this.targetTimeString}`);
                 $('.finished').css(finishedStyles);
+                // this is cheating but sometimes it says 00.01 or something like that
+                $(`#object${this.objectID}`).html('00.00');
                 // change color to red if not specified
                 if (!finishedStyles.color)
                     $(`#object${this.objectID}`).css('color', '#ff0000');
@@ -118,6 +125,7 @@ class Timer {
         if (!this.finished) {
             this.going = true;
         }
+        // TODO: update hover text here too
     }
     pause() {
         this.lastTime = d - this.startTime + this.lastTime;
@@ -143,6 +151,8 @@ class Timer {
                 // update timer normally
                 $(`#object${this.objectID}`).html(parseDate(this.timeLeft, 'timer'));
             }
+        } else {
+            // TODO: update hover text
         }
     }
 }
@@ -253,6 +263,15 @@ var verbose = false;
 // styles for .finished; applied when a timer finishes
 var finishedStyles = {};
 var interval = 50;
+// for Date.prototype.toLocaleString()
+var options = {
+    month: 'short',
+    day: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: 'numeric'
+};
 
 
 $(document).ready(function() {
