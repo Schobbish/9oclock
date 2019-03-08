@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+<!--
+   This version only has the clock and is in dark mode for projecting
+-->
    <head>
       <meta charset="utf-8">
-      <title>It's 9 o'clock on a Saturday</title>
+      <title>fancy clock</title>
       <link href="https://fonts.googleapis.com/css?family=Muli:300,400" rel="stylesheet">
       <link rel="stylesheet" href="assets/main.css">
+      <link rel="stylesheet" href="assets/page.css">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
       <link rel="apple-touch-icon" sizes="57x57" href="assets/favicons.ico/apple-icon-57x57.png">
@@ -20,26 +24,27 @@
       <link rel="icon" type="image/png" sizes="32x32" href="assets/favicons.ico/favicon-32x32.png">
       <link rel="icon" type="image/png" sizes="96x96" href="assets/favicons.ico/favicon-96x96.png">
       <link rel="icon" type="image/png" sizes="16x16" href="assets/favicons.ico/favicon-16x16.png">
-      <link rel="manifest" href="/manifest.json">
+      <link rel="manifest" href="assets/manifest.json">
       <meta name="msapplication-TileColor" content="#ffffff">
-      <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+      <meta name="msapplication-TileImage" content="assets/ms-icon-144x144.png">
       <meta name="theme-color" content="#ffffff">
    </head>
    <body>
 
-      <audio id="audioBox">
+      <!--<audio id="audioBox">
          <source src="assets/saturday.mp3" type="audio/mpeg">
          <source src="assets/saturday.ogg" type="audio/ogg; codecs=vorbis">
          Your browser does not support the <code>audio</code> element.
-      </audio>
+      </audio>-->
 
       <div id="main">
-         <h1 class="clock"></h1>
-         <h2 class="day"></h2>
-         <p id="testBox"></p>
+         <!-- <h1 id="clock"></h1> -->
+         <!--<h2 id="dayBox"></h2>
+         <p id="testBox"></p>-->
       </div>
+      <textarea name="message" rows="3" id="message"></textarea>
       <footer>
-         <p>This website by <span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">Nathaniel Adam</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a> - <a href="https://github.com/Schobbish/9oclock">GitHub</a> - <a href="https://youtu.be/acJ-Wt3rpfc">Full song</a> - <a href="projector/">Projector mode</a></p>
+         <p>This website by <span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">Nathaniel Adam</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a> - <a href="https://github.com/Schobbish/projector">GitHub</a> - <a href="https://github.com/Schobbish/projector/blob/master/documentation.md">Documentation</a></p>
       </footer>
 
    </body>

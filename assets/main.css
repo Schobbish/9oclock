@@ -1,11 +1,24 @@
 body {
    /* to actually resize text on ios */
    -webkit-text-size-adjust: 100%;
+   /*background-image: url("https://i.imgur.com/Qx3Rg38.jpg");*/
+   background-color: #000000;
 }
 #main *, textarea {
    text-align: center;
    font-family: 'Muli', sans-serif;
    background-color: transparent;
+   color: #ffffff;
+}
+h1:not(:first-of-type) {
+    margin-top: 0;
+}
+textarea {
+   width: 100%;
+   border: none;
+   resize: none;
+   font-size: 100px;
+   font-weight: 300;
 }
 .clock, .timer, .stopwatch, .countdown, .world {
    font-size: 100px;
@@ -24,8 +37,8 @@ footer p, footer a {
    font-family: 'Muli', sans-serif;
    font-size: 10px;
    text-align: center;
-   color: #dcdcdc;
+   color: #282828;
 }
 footer a:hover {
-   color: #c0c0c0;
+   color: #343434;
 }
