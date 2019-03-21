@@ -373,6 +373,15 @@ $(document).ready(function() {
         }
     });
 
+    // press shift+period (gt symbol) to focus the textarea
+    $(window).keydown(function(event) {
+        if (event.key === '>') {
+            $('textarea').focus();
+            // and apparently keydown goes before typing so no need for this
+            // $('textarea').val($('textarea').val() + '>')
+        }
+    });
+
     // this is like setInterval except the interval can be changed
     function intervalFunct() {
         d = new Date();
