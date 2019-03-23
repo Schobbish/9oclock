@@ -23,7 +23,9 @@ class Clock {
         // find timezone name for hover text (don't do hover text for default clocks)
         var timeZoneName = (new Date()).toLocaleTimeString('en-US', { hour12: "false", timeZoneName: "short" }).split(' ')[2];
 
-        $('#main').append(`<h1 class="clock" id="object${objectCounter}" title="Time zone: ${timeZoneName}"></h1>`);
+        $('#main').append(`<h1 class="clock" id="object${objectCounter}"></h1>`);
+        // with hover text:
+        // $('#main').append(`<h1 class="clock" id="object${objectCounter}" title="Time zone: ${timeZoneName}"></h1>`);
         this.objectID = objectCounter;
         objectCounter++;
     }
