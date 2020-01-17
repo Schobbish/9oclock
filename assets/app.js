@@ -17,7 +17,7 @@ class Clock {
      * Clock thing. Has seconds.
      * @param timeZone Time zone the clock should be in (how to implement?)
      */
-    constructor(timeZone) {
+    constructor(timeZone, ...args) {
         this.display = "hi";
         this.id = widgetCounter;
         widgetCounter++;
@@ -44,9 +44,12 @@ var cmds = {
          * Creates a new widget.
          * @param {string} newWidget Widget to be created.
          */
-        run(newWidget) {
+        run(newWidget, ...args) {
             if (availableWidgets[newWidget]) {
-                activeWidgets.push(new availableWidgets[newWidget]());
+                // https://stackoverflow.com/a/8843181
+                // need to add null to beginning of args first for some reason
+                args.splice(0, 0, null)
+                activeWidgets.push(new (Function.prototype.bind.apply(availableWidgets[newWidget], args)));
             } else {
                 console.error(`projector error: widget not found: ${newWidget}`);
                 activeWidgets.push(new ClockErr(`error: widget not found: ${newWidget}`));
