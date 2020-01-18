@@ -11,7 +11,7 @@ Hi welcome to the projector clock documentation. There is no reason why this clo
 3. [License](#license)
 
 ## Commands
-You can give commands to the website in the textarea element. Each command should be prefixed with `>> ` (note the space). Fun fact if you hit shift+. (>) it will focus the textarea for you. Obviously you can also type normal text in the textarea to show a message or something. Commands will always be converted to lowercase for parsing.
+You can give commands to the website in the textarea element. Each command should be prefixed with `>> ` (note the space). Fun fact if you hit shift+. (>) it will focus the textarea for you (does not work on older browsers). Obviously you can also type normal text in the textarea to show a message or something. Commands will always be converted to lowercase for parsing.
 
 ### `create <widget>`
 Creates a widget of your choosing! Some widgets accept additional arguments. See [Widgets](#widgets) for more information. This command will show an error if the widget does not exist.

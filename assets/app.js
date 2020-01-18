@@ -119,10 +119,11 @@ var cmds = {
 
 /**
  * Parses and runs commands and what not.
+ * Returns true if the command was valid.
  * @param {string} cmd Command to run.
  */
 function run(cmd) {
-    if (cmd.split(' ')[0] === ">>") {
+    if (cmd.split(" ")[0] === ">>") {
         // then yes it is a command we need to run
         // make all lowercase (hopefully this won't matter)
         cmd = cmd.toLowerCase();
@@ -130,7 +131,7 @@ function run(cmd) {
         console.log(cmd);
 
         /** Arguments given to command line. `args[0]` is the command name. */
-        const args = cmd.split(' ').slice(1);
+        const args = cmd.split(" ").slice(1);
         if (cmds[args[0]]) {
             // gives all args after the first to the command
             cmds[args[0]].run.apply(null, args.slice(1));
@@ -139,7 +140,10 @@ function run(cmd) {
             activeWidgets.push(new ClockErr(
                 `error: command not found: ${args[0]}`));
         }
-    } // else do nothing
+        return true;
+    } else {
+        return false;
+    }
 }
 
 var d;
@@ -149,25 +153,36 @@ $(document).ready(function () {
     activeWidgets.push(new Clock());
 
     // main thing that detects command inputs
-    $('textarea').keyup(function () {
+    $("textarea").keydown(function () {
         // using event.code rather than event.key for compatibility
+        // hopefully it won't matter for other keyboard layouts
         if (event.code === "Enter") {
-            lines = $(this).val().split('\n');
+            lines = $(this).val().split("\n");
             for (const cmd of lines) {
-                run(cmd);
+                if (run(cmd)) {
+                    // clear box and prevent enter from printing if valid cmd
+                    $(this).val("")
+                    event.preventDefault();
+                }
             }
-            // clear box for next command
-            $(this).val('');
+        }
+
+        // escape to blur
+        if (event.code === "Escape") {
+            $(this).blur();
         }
     });
 
     // press shift+period (greater than symbol) to focus the textarea
-    $(window).keydown(function (event) {
-        // event.key does not work on windows xp
-        if (event.key === '>') {
-            $('textarea').focus();
+    $(window).keydown(function () {
+        // event.key does not work on windows xp. too bad for them.
+        // can't use event.code because that would assume layout
+        if (event.key === ">") {
+            $("textarea").focus();
         }
     });
+
+
 
     // this is like setInterval except the interval can be changed
     function intervalFunct() {
