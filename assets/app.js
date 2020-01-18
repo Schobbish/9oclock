@@ -7,9 +7,12 @@ class ClockErr {
         this.display = message;
         this.id = widgetCounter;
         widgetCounter++;
+
+        $("#main").append(
+            `<h1 class="error" id="widget${this.id}">${this.display}</h1>`);
     }
     update() {
-
+        // no update action
     }
 }
 class Clock {
@@ -17,13 +20,43 @@ class Clock {
      * Clock thing. Has seconds.
      * @param timeZone Time zone the clock should be in (how to implement?)
      */
-    constructor(timeZone, ...args) {
-        this.display = "hi";
+    constructor(timeZone) {
+        this.timeZone;
         this.id = widgetCounter;
         widgetCounter++;
+
+        $("#main").append(
+            `<h1 class="clock" id="widget${this.id}">clock</h1>`);
+
+        if (timeZone) {
+            // if valid time zone abbr,
+            //  set timeZone appropriately and set timeZoneName to that abbr.
+            // else if valid UTC offset,
+            //  set timeZone to that and have no timeZoneName.
+            // else if invalid, pretend it never existed
+            if (tzAbbrs.hasOwnProperty(timeZone)) {
+                this.timeZone = moment().utcOffset(tzAbbrs[timeZone]).format("Z");
+                this.timeZoneName = timeZone.toUpperCase();
+            } else if (timeZone.match(/Z|[+-]\d\d(?::?\d\d)?/)) {
+                // regex from moment.js source for UTC offsets
+                this.timeZone = moment().utcOffset(timeZone).format("Z");
+                this.timeZoneName = undefined;
+            }
+            // $(`#widget${this.id}`).prop("title", `UTC${timeZone}`);
+        }
     }
     update() {
-
+        // show time zone if set else show local time
+        if (this.timeZone) {
+            // if there is a time zone name show that else show UTC offset
+            if (this.timeZoneName) {
+                $(`#widget${this.id}`).html(moment().utcOffset(this.timeZone).format(`LTS [${this.timeZoneName}]`));
+            } else {
+                $(`#widget${this.id}`).html(moment().utcOffset(this.timeZone).format("LTS [UTC]Z"));
+            }
+        } else {
+            $(`#widget${this.id}`).html(moment().format("LTS"));
+        }
     }
 }
 
@@ -38,7 +71,7 @@ var widgetCounter = 0;
 
 /** List of commands. Commands live here. */
 var cmds = {
-    // each command name should have an object with a `run()` funct inside
+    // each command name should have an object with a `run()` function inside
     "create": {
         /**
          * Creates a new widget.
@@ -47,12 +80,16 @@ var cmds = {
         run(newWidget, ...args) {
             if (availableWidgets[newWidget]) {
                 // https://stackoverflow.com/a/8843181
-                // need to add null to beginning of args first for some reason
-                args.splice(0, 0, null)
-                activeWidgets.push(new (Function.prototype.bind.apply(availableWidgets[newWidget], args)));
+                // need to add null to beginning of args first
+                args.splice(0, 0, null);
+                activeWidgets.push(
+                    new (Function.prototype.bind.apply(
+                        availableWidgets[newWidget], args)));
             } else {
-                console.error(`projector error: widget not found: ${newWidget}`);
-                activeWidgets.push(new ClockErr(`error: widget not found: ${newWidget}`));
+                console.error(
+                    `projector error: widget not found: ${newWidget}`);
+                activeWidgets.push(
+                    new ClockErr(`error: widget not found: ${newWidget}`));
             }
         }
     }, "delete": {
@@ -62,9 +99,12 @@ var cmds = {
          */
         run(index) {
             if (activeWidgets[index]) {
+                // delete element by id
+                $(`#widget${activeWidgets[index].id}`).remove();
                 activeWidgets.splice(index, 1);
             } else {
-                console.error(`projector error: invalid index to delete: ${index}`);
+                console.error(
+                    `projector error: invalid index to delete: ${index}`);
             }
         }
     }, "done": {
@@ -85,9 +125,10 @@ var cmds = {
 function run(cmd) {
     if (cmd.split(' ')[0] === ">>") {
         // then yes it is a command we need to run
-        console.log(cmd);
         // make all lowercase (hopefully this won't matter)
         cmd = cmd.toLowerCase();
+        // permanent console log
+        console.log(cmd);
 
         /** Arguments given to command line. `args[0]` is the command name. */
         const args = cmd.split(' ').slice(1);
@@ -96,7 +137,8 @@ function run(cmd) {
             cmds[args[0]].run.apply(null, args.slice(1));
         } else {
             console.error(`projector error: command not found: ${args[0]}`);
-            activeWidgets.push(new ClockErr(`projector error: command not found: ${args[0]}`));
+            activeWidgets.push(new ClockErr(
+                `error: command not found: ${args[0]}`));
         }
     } // else do nothing
 }
@@ -107,6 +149,7 @@ var interval = 50;
 $(document).ready(function () {
     activeWidgets.push(new Clock());
 
+    // main thing that detects command inputs
     $('textarea').keyup(function () {
         if (event.key === "Enter") {
             lines = $(this).val().split('\n');
@@ -117,7 +160,8 @@ $(document).ready(function () {
             $(this).val('');
         }
     });
-    // press shift+period (gt symbol) to focus the textarea
+
+    // press shift+period (greater than symbol) to focus the textarea
     $(window).keydown(function (event) {
         if (event.key === '>') {
             $('textarea').focus();
@@ -125,15 +169,16 @@ $(document).ready(function () {
             // $('textarea').val($('textarea').val() + '>')
         }
     });
+
     // this is like setInterval except the interval can be changed
     function intervalFunct() {
-        d = new Date();
+        d = moment();
         if (activeWidgets) {
             for (const widget of activeWidgets) {
                 widget.update();
             }
         }
-        // recursive
+        // recursive!!
         setTimeout(intervalFunct, interval);
     }
     setTimeout(intervalFunct, interval);
