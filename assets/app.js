@@ -18,10 +18,11 @@ class ClockErr {
 class Clock {
     /**
      * Clock thing. Has seconds.
-     * @param timeZone Time zone the clock should be in (how to implement?)
+     * @param timeZone Time zone as UTC offset or abbreviation.
      */
     constructor(timeZone) {
         this.timeZone;
+        this.timeZoneName;
         this.id = widgetCounter;
         widgetCounter++;
 
@@ -40,7 +41,6 @@ class Clock {
             } else if (timeZone.match(/Z|[+-]\d\d(?::?\d\d)?/)) {
                 // regex from moment.js source for UTC offsets
                 this.timeZone = moment().utcOffset(timeZone).format("Z");
-                this.timeZoneName = undefined;
             }
             // $(`#widget${this.id}`).prop("title", `UTC${timeZone}`);
         }
