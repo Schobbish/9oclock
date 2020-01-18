@@ -42,7 +42,6 @@ class Clock {
                 // regex from moment.js source for UTC offsets
                 this.timeZone = moment().utcOffset(timeZone).format("Z");
             }
-            // $(`#widget${this.id}`).prop("title", `UTC${timeZone}`);
         }
     }
     update() {
@@ -151,7 +150,8 @@ $(document).ready(function () {
 
     // main thing that detects command inputs
     $('textarea').keyup(function () {
-        if (event.key === "Enter") {
+        // using event.code rather than event.key for compatibility
+        if (event.code === "Enter") {
             lines = $(this).val().split('\n');
             for (const cmd of lines) {
                 run(cmd);
@@ -163,10 +163,9 @@ $(document).ready(function () {
 
     // press shift+period (greater than symbol) to focus the textarea
     $(window).keydown(function (event) {
+        // event.key does not work on windows xp
         if (event.key === '>') {
             $('textarea').focus();
-            // and apparently keydown goes before typing so no need for this
-            // $('textarea').val($('textarea').val() + '>')
         }
     });
 
