@@ -112,7 +112,7 @@ var cmds = {
          */
         run() {
             // needs testing
-            $(this).blur();
+            $("textarea").blur();
         }
     }
 };
