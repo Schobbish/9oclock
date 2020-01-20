@@ -23,6 +23,7 @@ class Clock {
     constructor(timeZone) {
         this.timeZone;
         this.timeZoneName;
+        this.error = false;
         this.id = widgetCounter;
         widgetCounter++;
 
@@ -41,12 +42,22 @@ class Clock {
             } else if (timeZone.match(/Z|[+-]\d\d(?::?\d\d)?/)) {
                 // regex from moment.js source for UTC offsets
                 this.timeZone = moment().utcOffset(timeZone).format("Z");
+            } else {
+                // display error
+                this.error = true;
+                console.error(`clock: invalid time zone: ${timeZone}`)
+                // remove clock class and add error class (questionable?)
+                $(`#widget${this.id}`).removeClass("clock");
+                $(`#widget${this.id}`).addClass("error");
+                $(`#widget${this.id}`).html(`clock: invalid time zone: ${timeZone}`);
             }
         }
     }
     update() {
-        // show time zone if set else show local time
-        if (this.timeZone) {
+        // do nothing if error else show time zone if set else show local time
+        if (this.error) {
+
+        } else if (this.timeZone) {
             // if there is a time zone name show that else show UTC offset
             if (this.timeZoneName) {
                 $(`#widget${this.id}`).html(moment().utcOffset(this.timeZone).format(`LTS [${this.timeZoneName}]`));
@@ -161,7 +172,7 @@ $(document).ready(function () {
             for (const cmd of lines) {
                 if (run(cmd)) {
                     // clear box and prevent enter from printing if valid cmd
-                    $(this).val("")
+                    $(this).val("");
                     event.preventDefault();
                 }
             }
