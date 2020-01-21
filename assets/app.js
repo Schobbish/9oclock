@@ -8,17 +8,17 @@ class ClockErr {
         this.id = widgetCounter;
         widgetCounter++;
 
-        $("#main").append(
-            `<h1 class="error" id="widget${this.id}">${this.display}</h1>`);
+        $("#main").append(`<h1 class="error" id="widget${this.id}">${this.display}</h1>`);
     }
     update() {
         // no update action
     }
 }
+
 class Clock {
     /**
-     * Clock thing. Has seconds.
-     * @param timeZone Time zone as UTC offset or abbreviation.
+     * Clock widget. Has seconds and supports different time zones
+     * @param {string} timeZone Time zone as UTC offset or abbreviation.
      */
     constructor(timeZone) {
         this.timeZone;
@@ -27,8 +27,7 @@ class Clock {
         this.id = widgetCounter;
         widgetCounter++;
 
-        $("#main").append(
-            `<h1 class="clock" id="widget${this.id}">clock</h1>`);
+        $("#main").append(`<h1 class="clock" id="widget${this.id}">clock</h1>`);
 
         if (timeZone) {
             // if valid time zone abbr,
@@ -40,12 +39,12 @@ class Clock {
                 this.timeZone = moment().utcOffset(tzAbbrs[timeZone]).format("Z");
                 this.timeZoneName = timeZone.toUpperCase();
             } else if (timeZone.match(/Z|[+-]\d\d(?::?\d\d)?/)) {
-                // regex from moment.js source for UTC offsets
+                // regex from moment.js source for UTC offsets (MIT)
                 this.timeZone = moment().utcOffset(timeZone).format("Z");
             } else {
                 // display error
                 this.error = true;
-                console.error(`clock: invalid time zone: ${timeZone}`)
+                console.error(`clock: invalid time zone: ${timeZone}`);
                 // remove clock class and add error class (questionable?)
                 $(`#widget${this.id}`).removeClass("clock");
                 $(`#widget${this.id}`).addClass("error");
@@ -53,6 +52,7 @@ class Clock {
             }
         }
     }
+    /** Updates the time on the clock */
     update() {
         // do nothing if error else show time zone if set else show local time
         if (this.error) {
@@ -70,14 +70,144 @@ class Clock {
     }
 }
 
+class Stopwatch {
+    /**
+     * Stopwatch widget which can be clicked to start/pause
+     * @param {string} startTime
+     *      (optional) start at this time (format: d.h:m:s)
+     */
+    constructor(startTime) {
+        /** is the stopwatch going?? or not?? */
+        this.going = false;
+        /** time in ms */
+        this.totalTime = 0;
+        this.stopTime = moment();
+        /** text for HTML title property */
+        this.title = "Click to start the stopwatch."
+        this.error = false;
+        this.id = widgetCounter;
+        widgetCounter++;
+
+        $("#main").append(`<h1 class="stopwatch" id="widget${this.id}" title="${this.title}">00:00.00</h1>`);
+        if (startTime) {
+            // check if valid duration (asp net time span)
+            if (checkAspNetDuration(startTime)) {
+                this.totalTime = moment.duration(startTime);
+                $(`#widget${this.id}`).html(this.durToString());
+            } else {
+                // display error
+                this.error = true;
+                console.error(`stopwatch: invalid start time: ${startTime}`);
+                $(`#widget${this.id}`).prop("title", "");
+                $(`#widget${this.id}`).removeClass("stopwatch");
+                $(`#widget${this.id}`).addClass("error");
+                $(`#widget${this.id}`).html(`stopwatch: invalid start time: ${startTime}`);
+            }
+        }
+
+        $(`#widget${this.id}`).click(function () {
+            var id = $(this).attr('id').slice(6);
+            for (const widget of activeWidgets) {
+                // find widget with that id
+                if (widget.id == id) {
+                    // reverse `going` value
+                    if (widget.going == true) {
+                        widget.pause();
+                    } else {
+                        widget.start();
+                    }
+                    break;
+                }
+            }
+        });
+    }
+    /** Starts the stopwatch */
+    start() {
+        if (!this.error) {
+            // reset startTime
+            this.startTime = moment();
+            this.going = true;
+            this.title = "Click to pause the stopwatch.\n"
+
+            // update title text
+            // totalTime == 0 means that it was started at zero
+            if (!this.totalTime) {
+                this.title += "Started "
+            } else {
+                this.title += "Would have started "
+            }
+            this.title += moment().subtract(this.totalTime).calendar(null, {
+                lastDay: "[yesterday at] LTS",
+                sameDay: "[at] LTS",
+                nextDay: "[tomorrow at] LTS",
+                lastWeek: "[last] dddd [at] LTS",
+                nextWeek: "[next] dddd [at] LTS",
+                sameElse: "YYYY-MM-DD [at] LTS"
+            }) + ".";
+
+            $(`#widget${this.id}`).prop("title", this.title);
+        }
+    }
+    /** Pauses the stopwatch */
+    pause() {
+        if (!this.error) {
+            // store duration stopwatch was going for
+            this.going = false;
+            interval = 50;
+            this.totalTime += moment().diff(this.startTime);
+            this.stopTime = moment();
+            this.title = "Click to start the stopwatch."
+            $(`#widget${this.id}`).html(this.durToString());
+            $(`#widget${this.id}`).prop("title", this.title);
+        }
+    }
+    /**
+     * Gets stopwatch's duration and outputs as string
+     * @returns {String} Duration in form [h:]mm:ss.cc (no days, just hours)
+     */
+    durToString() {
+        // dur must be initialized for some reason (scopes???)
+        var dur;
+        var outStr = "";
+
+        // better to get the duration from totalTime when stopped
+        if (this.going) {
+            dur = moment.duration(moment().diff(this.startTime) + this.totalTime);
+        } else {
+            dur = moment.duration(this.totalTime);
+        }
+        if (dur.asHours() >= 1) {
+            outStr += Math.floor(dur.asHours()) + ":";
+        }
+        outStr += dur.minutes().toString().padStart(2, 0) + ":";
+        outStr += dur.seconds().toString().padStart(2, 0) + ".";
+        outStr += dur.milliseconds().toString().padStart(3, 0).slice(0, 2);
+
+        return outStr;
+    }
+    update() {
+        if (this.going && !this.error) {
+            interval = 10;
+            $(`#widget${this.id}`).html(this.durToString());
+        }
+    }
+}
+
+
 /** List of available widgets. Widget objects must get registered here */
 var availableWidgets = {
     "clock": Clock,
+    "stopwatch": Stopwatch
 };
 /** List of widgets currently active on the page */
 var activeWidgets = [];
 /** For widget IDs */
 var widgetCounter = 0;
+/**
+ * Inverval, in ms, at which the website updates.
+ * 50 is normal, 10 for when there is a stopwatch or a timer < 60s
+ */
+var interval = 50;
 
 /** List of commands. Commands live here. */
 var cmds = {
@@ -96,10 +226,8 @@ var cmds = {
                     new (Function.prototype.bind.apply(
                         availableWidgets[newWidget], args)));
             } else {
-                console.error(
-                    `projector error: widget not found: ${newWidget}`);
-                activeWidgets.push(
-                    new ClockErr(`error: widget not found: ${newWidget}`));
+                console.error(`projector error: widget not found: ${newWidget}`);
+                activeWidgets.push(new ClockErr(`error: widget not found: ${newWidget}`));
             }
         }
     }, "delete": {
@@ -113,8 +241,7 @@ var cmds = {
                 $(`#widget${activeWidgets[index].id}`).remove();
                 activeWidgets.splice(index, 1);
             } else {
-                console.error(
-                    `projector error: invalid index to delete: ${index}`);
+                console.error(`projector error: invalid index to delete: ${index}`);
             }
         }
     }, "done": {
@@ -130,8 +257,8 @@ var cmds = {
 
 /**
  * Parses and runs commands and what not.
- * Returns true if the command was valid.
  * @param {string} cmd Command to run.
+ * @returns {boolean} true if command was valid
  */
 function run(cmd) {
     if (cmd.split(" ")[0] === ">>") {
@@ -148,8 +275,7 @@ function run(cmd) {
             cmds[args[0]].run.apply(null, args.slice(1));
         } else {
             console.error(`projector error: command not found: ${args[0]}`);
-            activeWidgets.push(new ClockErr(
-                `error: command not found: ${args[0]}`));
+            activeWidgets.push(new ClockErr(`error: command not found: ${args[0]}`));
         }
         return true;
     } else {
@@ -157,8 +283,19 @@ function run(cmd) {
     }
 }
 
-var d;
-var interval = 50;
+/**
+ * Checks if a string is a duration of form d.h:m:s
+ * Regex from moment.js source (MIT)
+ * @param {string} dur Duration string to check
+ * @returns {boolean} true if duration was valid
+ */
+function checkAspNetDuration(dur) {
+    if (dur.match(/^(\-|\+)?(?:(\d*)[. ])?(\d+)\:(\d+)(?:\:(\d+)(\.\d*)?)?$/)) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 $(document).ready(function () {
     activeWidgets.push(new Clock());
