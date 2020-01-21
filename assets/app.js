@@ -1,7 +1,7 @@
 class ClockErr {
     /**
-     * Generic error display
-     * @param {string} message Error message to display
+     * Generic error display.
+     * @param {string} message Error message to display.
      */
     constructor(message) {
         this.display = message;
@@ -10,14 +10,19 @@ class ClockErr {
 
         $("#main").append(`<h1 class="error" id="widget${this.id}">${this.display}</h1>`);
     }
+
+
+    /** Does nothing. */
     update() {
         // no update action
     }
 }
 
+
+
 class Clock {
     /**
-     * Clock widget. Has seconds and supports different time zones
+     * Clock widget. Has seconds and supports different time zones.
      * @param {string} timeZone Time zone as UTC offset or abbreviation.
      */
     constructor(timeZone) {
@@ -52,7 +57,9 @@ class Clock {
             }
         }
     }
-    /** Updates the time on the clock */
+
+
+    /** Updates the time on the clock. */
     update() {
         // do nothing if error else show time zone if set else show local time
         if (this.error) {
@@ -70,20 +77,21 @@ class Clock {
     }
 }
 
+
+
 class Stopwatch {
     /**
-     * Stopwatch widget which can be clicked to start/pause
-     * @param {string} startTime
-     *      (optional) start at this time (format: d.h:m:s)
+     * Stopwatch widget which can be clicked to start/pause.
+     * @param {string} startTime (optional) start at this time (format: d.h:m:s)
      */
     constructor(startTime) {
-        /** is the stopwatch going?? or not?? */
+        /** Is the stopwatch going?? or not?? */
         this.going = false;
-        /** time in ms */
+        /** Time in ms */
         this.totalTime = 0;
         this.stopTime = moment();
-        /** text for HTML title property */
-        this.title = "Click to start the stopwatch."
+        /** Text for HTML title property. */
+        this.title = "Click to start the stopwatch.";
         this.error = false;
         this.id = widgetCounter;
         widgetCounter++;
@@ -121,20 +129,22 @@ class Stopwatch {
             }
         });
     }
-    /** Starts the stopwatch */
+
+
+    /** Starts the stopwatch. */
     start() {
         if (!this.error) {
             // reset startTime
             this.startTime = moment();
             this.going = true;
-            this.title = "Click to pause the stopwatch.\n"
+            this.title = "Click to pause the stopwatch.\n";
 
             // update title text
             // totalTime == 0 means that it was started at zero
             if (!this.totalTime) {
-                this.title += "Started "
+                this.title += "Started ";
             } else {
-                this.title += "Would have started "
+                this.title += "Would have started ";
             }
             this.title += moment().subtract(this.totalTime).calendar(null, {
                 lastDay: "[yesterday at] LTS",
@@ -148,7 +158,9 @@ class Stopwatch {
             $(`#widget${this.id}`).prop("title", this.title);
         }
     }
-    /** Pauses the stopwatch */
+
+
+    /** Pauses the stopwatch. */
     pause() {
         if (!this.error) {
             // store duration stopwatch was going for
@@ -156,13 +168,16 @@ class Stopwatch {
             interval = 50;
             this.totalTime += moment().diff(this.startTime);
             this.stopTime = moment();
-            this.title = "Click to start the stopwatch."
+            this.title = "Click to start the stopwatch.";
+
             $(`#widget${this.id}`).html(this.durToString());
             $(`#widget${this.id}`).prop("title", this.title);
         }
     }
+
+
     /**
-     * Gets stopwatch's duration and outputs as string
+     * Gets stopwatch's duration and outputs as string.
      * @returns {String} Duration in form [h:]mm:ss.cc (no days, just hours)
      */
     durToString() {
@@ -179,12 +194,16 @@ class Stopwatch {
         if (dur.asHours() >= 1) {
             outStr += Math.floor(dur.asHours()) + ":";
         }
+
         outStr += dur.minutes().toString().padStart(2, 0) + ":";
         outStr += dur.seconds().toString().padStart(2, 0) + ".";
         outStr += dur.milliseconds().toString().padStart(3, 0).slice(0, 2);
 
         return outStr;
     }
+
+
+    /** Updates the time on stopwatch. */
     update() {
         if (this.going && !this.error) {
             interval = 10;
@@ -194,12 +213,13 @@ class Stopwatch {
 }
 
 
-/** List of available widgets. Widget objects must get registered here */
+
+/** List of available widgets. Widget objects must get registered here. */
 var availableWidgets = {
     "clock": Clock,
     "stopwatch": Stopwatch
 };
-/** List of widgets currently active on the page */
+/** List of widgets currently active on the page. */
 var activeWidgets = [];
 /** For widget IDs */
 var widgetCounter = 0;
@@ -230,6 +250,8 @@ var cmds = {
                 activeWidgets.push(new ClockErr(`error: widget not found: ${newWidget}`));
             }
         }
+
+
     }, "delete": {
         /**
          * Deletes widget at index.
@@ -244,19 +266,23 @@ var cmds = {
                 console.error(`projector error: invalid index to delete: ${index}`);
             }
         }
+
+
     }, "done": {
         /**
-         * Gets cursor out of textarea. Don't run without a browser.
+         * Gets cursor out of textarea.
          */
         run() {
             // needs testing
             $("textarea").blur();
         }
+
+
     }
 };
 
 /**
- * Parses and runs commands and what not.
+ * Parses and runs commands.
  * @param {string} cmd Command to run.
  * @returns {boolean} true if command was valid
  */
@@ -277,17 +303,19 @@ function run(cmd) {
             console.error(`projector error: command not found: ${args[0]}`);
             activeWidgets.push(new ClockErr(`error: command not found: ${args[0]}`));
         }
+
         return true;
     } else {
         return false;
     }
 }
 
+
 /**
- * Checks if a string is a duration of form d.h:m:s
+ * Checks if a string is a duration of form [d.]h:m[:s].
  * Regex from moment.js source (MIT)
- * @param {string} dur Duration string to check
- * @returns {boolean} true if duration was valid
+ * @param {string} dur Duration string to check.
+ * @returns {boolean} true if duration was valid.
  */
 function checkAspNetDuration(dur) {
     if (dur.match(/^(\-|\+)?(?:(\d*)[. ])?(\d+)\:(\d+)(?:\:(\d+)(\.\d*)?)?$/)) {
@@ -296,6 +324,7 @@ function checkAspNetDuration(dur) {
         return false;
     }
 }
+
 
 $(document).ready(function () {
     activeWidgets.push(new Clock());
@@ -321,6 +350,7 @@ $(document).ready(function () {
         }
     });
 
+
     // press shift+period (greater than symbol) to focus the textarea
     $(window).keydown(function () {
         // event.key does not work on windows xp. too bad for them.
@@ -329,7 +359,6 @@ $(document).ready(function () {
             $("textarea").focus();
         }
     });
-
 
 
     // this is like setInterval except the interval can be changed
@@ -343,5 +372,7 @@ $(document).ready(function () {
         // recursive!!
         setTimeout(intervalFunct, interval);
     }
+
+
     setTimeout(intervalFunct, interval);
 });
