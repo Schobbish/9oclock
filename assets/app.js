@@ -11,13 +11,11 @@ class ClockErr {
         $("#main").append(`<h1 class="error" id="widget${this.id}">${this.display}</h1>`);
     }
 
-
     /** Does nothing. */
     update() {
         // no update action
     }
 }
-
 
 
 class Clock {
@@ -58,7 +56,6 @@ class Clock {
         }
     }
 
-
     /** Updates the time on the clock. */
     update() {
         // do nothing if error else show time zone if set else show local time
@@ -76,7 +73,6 @@ class Clock {
         }
     }
 }
-
 
 
 class Stopwatch {
@@ -130,7 +126,6 @@ class Stopwatch {
         });
     }
 
-
     /** Starts the stopwatch. */
     start() {
         if (!this.error) {
@@ -159,7 +154,6 @@ class Stopwatch {
         }
     }
 
-
     /** Pauses the stopwatch. */
     pause() {
         if (!this.error) {
@@ -174,7 +168,6 @@ class Stopwatch {
             $(`#widget${this.id}`).prop("title", this.title);
         }
     }
-
 
     /**
      * Gets stopwatch's duration and outputs as string.
@@ -202,7 +195,6 @@ class Stopwatch {
         return outStr;
     }
 
-
     /** Updates the time on stopwatch. */
     update() {
         if (this.going && !this.error) {
@@ -211,7 +203,6 @@ class Stopwatch {
         }
     }
 }
-
 
 
 /** List of available widgets. Widget objects must get registered here. */
@@ -251,7 +242,6 @@ var cmds = {
             }
         }
 
-
     }, "delete": {
         /**
          * Deletes widget at index.
@@ -267,7 +257,6 @@ var cmds = {
             }
         }
 
-
     }, "done": {
         /**
          * Gets cursor out of textarea.
@@ -276,8 +265,6 @@ var cmds = {
             // needs testing
             $("textarea").blur();
         }
-
-
     }
 };
 
@@ -309,7 +296,6 @@ function run(cmd) {
         return false;
     }
 }
-
 
 /**
  * Checks if a string is a duration of form [d.]h:m[:s].
@@ -350,7 +336,6 @@ $(document).ready(function () {
         }
     });
 
-
     // press shift+period (greater than symbol) to focus the textarea
     $(window).keydown(function () {
         // event.key does not work on windows xp. too bad for them.
@@ -359,7 +344,6 @@ $(document).ready(function () {
             $("textarea").focus();
         }
     });
-
 
     // this is like setInterval except the interval can be changed
     function intervalFunct() {
@@ -372,7 +356,5 @@ $(document).ready(function () {
         // recursive!!
         setTimeout(intervalFunct, interval);
     }
-
-
     setTimeout(intervalFunct, interval);
 });
