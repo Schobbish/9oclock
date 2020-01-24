@@ -1,6 +1,7 @@
+/** Generic error display. */
 class ClockErr {
     /**
-     * Generic error display.
+     * Creates an error message.
      * @param {string} message Error message to display.
      */
     constructor(message) {
@@ -18,9 +19,10 @@ class ClockErr {
 }
 
 
+/** Clock widget. Has seconds and supports different time zones. */
 class Clock {
     /**
-     * Clock widget. Has seconds and supports different time zones.
+     * Creates a clock.
      * @param {string} [timeZone] Time zone as UTC offset or abbreviation.
      */
     constructor(timeZone) {
@@ -75,9 +77,10 @@ class Clock {
 }
 
 
+/** Stopwatch widget which can be clicked to start/pause. */
 class Stopwatch {
     /**
-     * Stopwatch widget which can be clicked to start/pause.
+     * Creates a stopwatch.
      * @param {string} [startTime] start at this time (format: d.h:m:s)
      */
     constructor(startTime) {
