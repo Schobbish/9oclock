@@ -1,3 +1,10 @@
+/**
+ * @file Brains of the projector clock.
+ * @author Nathaniel Adam
+ * @license MIT
+ */
+
+
 /** Generic error display. */
 class ClockErr {
     /**
