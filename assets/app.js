@@ -238,7 +238,7 @@ var cmds = {
          * @param {string} newWidget Widget to be created.
          * @param {...*} args Args to pass to widget constructor.
          */
-        run(newWidget, ...args) {
+        execute(newWidget, ...args) {
             if (availableWidgets[newWidget]) {
                 // https://stackoverflow.com/a/8843181
                 // need to add null to beginning of args first
@@ -257,7 +257,7 @@ var cmds = {
          * Deletes widget at index.
          * @param {int} index This is the index.
          */
-        run(index) {
+        execute(index) {
             if (activeWidgets[index]) {
                 // delete element by id
                 $(`#widget${activeWidgets[index].id}`).remove();
@@ -271,7 +271,7 @@ var cmds = {
         /**
          * Gets cursor out of textarea.
          */
-        run() {
+        execute() {
             // needs testing
             $("textarea").blur();
         }
@@ -295,7 +295,7 @@ function run(cmd) {
         const args = cmd.split(" ").slice(1);
         if (cmds[args[0]]) {
             // gives all args after the first to the command
-            cmds[args[0]].run.apply(null, args.slice(1));
+            cmds[args[0]].execute.apply(null, args.slice(1));
         } else {
             console.error(`projector error: command not found: ${args[0]}`);
             activeWidgets.push(new ClockErr(`error: command not found: ${args[0]}`));
