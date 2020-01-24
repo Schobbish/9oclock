@@ -21,7 +21,7 @@ class ClockErr {
 class Clock {
     /**
      * Clock widget. Has seconds and supports different time zones.
-     * @param {string} timeZone Time zone as UTC offset or abbreviation.
+     * @param {string} [timeZone] Time zone as UTC offset or abbreviation.
      */
     constructor(timeZone) {
         this.timeZone;
@@ -78,7 +78,7 @@ class Clock {
 class Stopwatch {
     /**
      * Stopwatch widget which can be clicked to start/pause.
-     * @param {string} startTime (optional) start at this time (format: d.h:m:s)
+     * @param {string} [startTime] start at this time (format: d.h:m:s)
      */
     constructor(startTime) {
         /** Is the stopwatch going?? or not?? */
@@ -159,7 +159,6 @@ class Stopwatch {
         if (!this.error) {
             // store duration stopwatch was going for
             this.going = false;
-            interval = 50;
             this.totalTime += moment().diff(this.startTime);
             this.stopTime = moment();
             this.title = "Click to start the stopwatch.";
@@ -227,6 +226,7 @@ var cmds = {
         /**
          * Creates a new widget.
          * @param {string} newWidget Widget to be created.
+         * @param {...*} args Args to pass to widget constructor.
          */
         run(newWidget, ...args) {
             if (availableWidgets[newWidget]) {
@@ -345,9 +345,14 @@ $(document).ready(function () {
         }
     });
 
-    // this is like setInterval except the interval can be changed
+    /**
+     * Updates all widgets.
+     * Uses setTimeout in a way that allows the delay (var interval)
+     * to be set dynamically.
+     */
     function intervalFunct() {
-        d = moment();
+        // reset interval
+        interval = 50;
         if (activeWidgets) {
             for (const widget of activeWidgets) {
                 widget.update();
