@@ -93,12 +93,12 @@ class Stopwatch {
     constructor(startTime) {
         /** Is the stopwatch going?? or not?? */
         this.going = false;
+        this.error = false;
         /** Time in ms */
         this.totalTime = 0;
         this.stopTime = moment();
         /** Text for HTML title property. */
         this.title = "Click to start the stopwatch.";
-        this.error = false;
         this.id = widgetCounter;
         widgetCounter++;
 
@@ -151,14 +151,7 @@ class Stopwatch {
             } else {
                 this.title += "Would have started ";
             }
-            this.title += moment().subtract(this.totalTime).calendar(null, {
-                lastDay: "[yesterday at] LTS",
-                sameDay: "[at] LTS",
-                nextDay: "[tomorrow at] LTS",
-                lastWeek: "[last] dddd [at] LTS",
-                nextWeek: "[next] dddd [at] LTS",
-                sameElse: "YYYY-MM-DD [at] LTS"
-            }) + ".";
+            this.title += moment().subtract(this.totalTime).calendar(null, calendarSettings) + ".";
 
             $(`#widget${this.id}`).prop("title", this.title);
         }
@@ -214,10 +207,151 @@ class Stopwatch {
 }
 
 
+/** Timer widget */
+class Timer {
+    /**
+     * Creates a timer.
+     * @param {string} length Duration of timer. (format: d.h:m:s)
+     */
+    constructor(length) {
+        /** Timer going or not. */
+        this.going = false;
+        this.error = false;
+        this.finished = false;
+        /** Time elapsed in ms. */
+        this.timeElapsed = 0;
+        /** Text for HTML title property. */
+        this.title = "Click to start the timer.";
+        this.id = widgetCounter;
+        widgetCounter++;
+
+        $("#main").append(`<h1 class="timer" id="widget${this.id}" title="${this.title}">timer</h1>`);
+        // get length from param, if no length show error
+        if (length) {
+            // check if good duration, else show error
+            if (checkAspNetDuration(length)) {
+                this.len = moment.duration(length);
+                this.timeLeft = this.len;
+                $(`#widget${this.id}`).html(this.timeToString());
+            } else {
+                this.error = true;
+                console.error(`timer: invalid length: ${length}`);
+                $(`#widget${this.id}`).prop("title", "");
+                $(`#widget${this.id}`).removeClass("timer");
+                $(`#widget${this.id}`).addClass("error");
+                $(`#widget${this.id}`).html(`timer: invalid length: ${length}`);
+            }
+        } else {
+            this.error = true;
+            console.error("timer: length is required");
+            $(`#widget${this.id}`).prop("title", "");
+            $(`#widget${this.id}`).removeClass("timer");
+            $(`#widget${this.id}`).addClass("error");
+            $(`#widget${this.id}`).html("timer: length is required");
+        }
+
+        // give it an event handler
+        $(`#widget${this.id}`).click(function () {
+            var id = $(this).attr('id').slice(6);
+            for (const widget of activeWidgets) {
+                // find widget with that id
+                if (widget.id == id) {
+                    // reverse `going` value
+                    if (widget.going == true) {
+                        widget.pause();
+                    } else {
+                        widget.start();
+                    }
+                    break;
+                }
+            }
+        });
+    }
+
+    /** Starts the timer and updates its title. */
+    start() {
+        if (!this.error && !this.finished) {
+            this.startTime = moment();
+            this.going = true;
+
+            this.title = "Click to pause the stopwatch.\n";
+            // if true, implies that it never has been paused
+            if (!this.timeElapsed) {
+                this.title += "Started ";
+            } else {
+                this.title += "Would have started ";
+            }
+            this.title += moment().subtract(this.timeElapsed).calendar(null, calendarSettings) + ".\n";
+            this.title += "Will end ";
+            this.title += moment().add(this.timeLeft).calendar(null, calendarSettings) + ".";
+            $(`#widget${this.id}`).prop("title", this.title);
+        }
+    }
+
+    /** Pauses the timer and updates this.timeElapsed. */
+    pause() {
+        if (!this.error && !this.finished) {
+            this.going = false;
+            // update timeElapsed
+            this.timeElapsed += moment().diff(this.startTime);
+            this.timeLeft = moment.duration(this.len - this.timeElapsed);
+            this.stopTime = moment();
+
+            this.title = "Click to start the timer.";
+            $(`#widget${this.id}`).html(this.timeToString());
+            $(`#widget${this.id}`).prop("title", this.title);
+        }
+    }
+
+    /**
+     * Gets the time left as a string.
+     * @returns {string} The time left.
+     */
+    timeToString() {
+        var outStr = "";
+
+        if (this.timeLeft.asHours() >= 1) {
+            outStr += Math.floor(this.timeLeft.asHours()) + ":";
+        }
+
+        if (this.timeLeft.asMinutes() >= 1) {
+            outStr += this.timeLeft.minutes().toString().padStart(2, 0) + ":";
+            outStr += this.timeLeft.seconds().toString().padStart(2, 0);
+        } else {
+            outStr += this.timeLeft.seconds().toString().padStart(2, 0);
+            outStr += "." + this.timeLeft.milliseconds().toString().padStart(3, 0).slice(0, 2);
+        }
+
+        return outStr;
+    }
+
+    /** Updates the time on the timer. */
+    update() {
+        if (this.finished) {
+            $(`#widget${this.id}`).html("00.00");
+        } else if (this.going && !this.error) {
+            this.timeLeft = moment.duration(this.len - (this.timeElapsed + moment().diff(this.startTime)));
+            if (this.timeLeft.asMilliseconds() <= 0) {
+                this.finished = true;
+                this.stopTime = moment();
+                this.title = `Ended ${this.stopTime.calendar(null, calendarSettings)}`;
+                $(`#widget${this.id}`).prop("title", this.title);
+            } else {
+                if (this.timeLeft.asMinutes() < 1) {
+                    interval = 10;
+                }
+                $(`#widget${this.id}`).html(this.timeToString());
+            }
+        }
+    }
+}
+
+
 /** List of available widgets. Widget objects must get registered here. */
 var availableWidgets = {
     "clock": Clock,
-    "stopwatch": Stopwatch
+    "stopwatch": Stopwatch,
+    "timer": Timer
 };
 /** List of widgets currently active on the page. */
 var activeWidgets = [];
@@ -228,6 +362,15 @@ var widgetCounter = 0;
  * 50 is normal, 10 for when there is a stopwatch or a timer < 60s
  */
 var interval = 50;
+/** For use with moment#calendar. */
+const calendarSettings = {
+    lastDay: "[yesterday at] LTS",
+    sameDay: "[at] LTS",
+    nextDay: "[tomorrow at] LTS",
+    lastWeek: "[last] dddd [at] LTS",
+    nextWeek: "[next] dddd [at] LTS",
+    sameElse: "YYYY-MM-DD [at] LTS"
+};
 
 /** List of commands. Commands live here. */
 var cmds = {

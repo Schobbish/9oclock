@@ -31,7 +31,10 @@ Creates a generic clock, defaulted in your time zone of course. Includes seconds
 You can hide the cursor behind clocks.
 
 ### Stopwatch
-Creates a stopwatch. To start or pause the stopwatch, simply click on it. (Starts/pauses on mouse up.) You may specify the time to start the stopwatch at in the form `[d.]h:m[:s]`. Partial seconds are allowed. The stopwatch print its time in the form `[h:]mm:ss.cc`. The hover text shows when the stopwatch was started.
+Creates a stopwatch. To start or pause the stopwatch, simply click on it. (Starts/pauses on mouse up.) You may specify the time to start the stopwatch at in the form `[d.]h:m[:s]`. Partial seconds are allowed. The stopwatch prints its time in the form `[h:]mm:ss.cc`. The hover text shows when the stopwatch was started.
+
+### Timer
+Creates a timer. You must follow this command with a length as a duration in the form `[d.]h:m[:s]`. Partial seconds are allowed. To start or pause the timer, simply click on it. (Starts/pauses on mouse up.) The timer prints its time in the form `[[h:]mm:]ss[.cc]`, with hundredths appearing once the time is below one minute.
 
 ## License
 This whole repository is licensed under the MIT License. What content exists on the website itself is licensed under a Creative Commons Attribution 4.0 International License.
