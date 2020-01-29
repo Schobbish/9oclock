@@ -365,10 +365,10 @@ function run(cmd) {
 }
 
 /**
-     * Updates all widgets.
-     * Uses setTimeout in a way that allows the delay (var interval)
-     * to be set dynamically.
-     */
+ * Updates all widgets.
+ * Uses setTimeout in a way that allows the delay (var interval)
+ * to be set dynamically.
+ */
 function intervalFunct() {
     // reset interval
     interval = 50;
@@ -408,6 +408,31 @@ function showError(id, type, message) {
     $(`#widget${id}`).removeClass(type);
     $(`#widget${id}`).addClass("error");
     $(`#widget${id}`).html(`${type}: ${message}`);
+}
+
+// in case browser doesn't support padStart
+if (!window.String.prototype.padStart) {
+    /**
+     * (bad) Reimplementation of padStart for old browsers
+     * @param {targetLength} number Length string should be
+     * @param {padChar} string One character only!!
+     *  Character to pad string to targetLength
+     */
+    window.String.prototype.padStart = function(targetLength, padChar) {
+        if (padChar.length > 1) {
+            console.warn("This reimplementation of padStart() should only be used with single character pad strings.")
+        }
+        if (this.length < targetLength) {
+            var outStr = padChar.toString();
+            for (let i = 0; i < targetLength - this.length - 1; i++) {
+                outStr += padChar.toString();
+            }
+            outStr += this;
+            return outStr;
+        } else {
+            return this;
+        }
+    };
 }
 
 
