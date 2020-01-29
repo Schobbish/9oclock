@@ -364,6 +364,23 @@ function run(cmd) {
 }
 
 /**
+     * Updates all widgets.
+     * Uses setTimeout in a way that allows the delay (var interval)
+     * to be set dynamically.
+     */
+function intervalFunct() {
+    // reset interval
+    interval = 50;
+    if (activeWidgets) {
+        for (const widget of activeWidgets) {
+            widget.update();
+        }
+    }
+    // recursive!!
+    lastTimeoutID = setTimeout(intervalFunct, interval);
+}
+
+/**
  * Checks if a string is a duration of form [d.]h:m[:s].
  * Regex from moment.js source (MIT)
  * @param {string} dur Duration string to check.
@@ -382,7 +399,7 @@ function checkAspNetDuration(dur) {
  * Must set `this.error = true` separately.
  * @param {number} id ID of widget to replace with error message.
  * @param {string} type The widget's type/class (lowercase).
- * @param {string} message Error message to displace
+ * @param {string} message Error message to display
  */
 function showError(id, type, message) {
     console.error(`${type}: ${message}`);
@@ -408,7 +425,6 @@ const calendarSettings = {
     nextWeek: "[next] dddd [at] LTS",
     sameElse: "YYYY-MM-DD [at] LTS"
 };
-
 /** List of commands. Commands live here. */
 const cmds = {
     // each command name should have an object with a `run()` function inside
@@ -448,12 +464,26 @@ const cmds = {
         }
 
     }, "done": {
-        /**
-         * Gets cursor out of textarea.
-         */
+        /** Gets cursor out of textarea. */
         execute() {
-            // needs testing
             $("textarea").blur();
+        }
+    }, "stop!": {
+        /** Stops the recursive setTimeout loop. */
+        execute() {
+            clearTimeout(lastTimeoutID);
+            emergencyStopped = true;
+            console.warn("Emergency stop.");
+        }
+    }, "restart": {
+        /** Restarts the setTimeout loop. Only works if it was stopped. */
+        execute() {
+            if (emergencyStopped) {
+                emergencyStopped = false;
+                setTimeout(intervalFunct, interval);
+            } else {
+                console.warn("Execution is not stopped.");
+            }
         }
     }
 };
@@ -467,6 +497,10 @@ var widgetCounter = 0;
  * 50 is normal, 10 for when there is a stopwatch or a timer < 60s
  */
 var interval = 50;
+/** The last setTimeout ID used, used in the stop command */
+var lastTimeoutID;
+/** If execution was stopped */
+var emergencyStopped = false;
 
 
 $(document).ready(function () {
@@ -502,21 +536,5 @@ $(document).ready(function () {
         }
     });
 
-    /**
-     * Updates all widgets.
-     * Uses setTimeout in a way that allows the delay (var interval)
-     * to be set dynamically.
-     */
-    function intervalFunct() {
-        // reset interval
-        interval = 50;
-        if (activeWidgets) {
-            for (const widget of activeWidgets) {
-                widget.update();
-            }
-        }
-        // recursive!!
-        setTimeout(intervalFunct, interval);
-    }
-    setTimeout(intervalFunct, interval);
+    lastTimeoutID = setTimeout(intervalFunct, interval);
 });

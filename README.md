@@ -9,6 +9,8 @@ You can generate timers, countdown clocks, and stopwatches. You can also change 
     1. [`create`](#create)
     2. [`delete`](#delete)
     3. [`done`](#done)
+    4. [`stop!`](#stop)
+    5. [`restart`](#restart)
 2. [Widgets](#widgets)
     1. [Clock](#clock)
 3. [License](#license)
@@ -21,6 +23,15 @@ Creates a widget of your choosing! Some widgets accept additional arguments. See
 
 ### `delete <index>`
 Deletes the widget at the index. The top widget has index 0. There is no way to delete by id.
+
+### `done`
+Unfocuses the textarea.
+
+### `stop!`
+Stop updating widgets. This is only meant for as a debugging tool.
+
+### `restart`
+Start updating widgets again. Only works if widgets are currently stopped. Any timers, stopwatches, etc. will update as if they never stopped if they were not stopped before the `stop!` command was issued.
 
 ## Widgets
 There are various clock-related things which you can have on the page. Summon each by issuing the `create <widget>` command. Some widgets accept additional arguments.
