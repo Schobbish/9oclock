@@ -334,6 +334,65 @@ class Timer {
 }
 
 
+/**
+ * Parses and runs commands.
+ * @param {string} cmd Command to run.
+ * @returns {boolean} true if command was valid
+ */
+function run(cmd) {
+    if (cmd.split(" ")[0] === ">>") {
+        // then yes it is a command we need to run
+        // make all lowercase (hopefully this won't matter)
+        cmd = cmd.toLowerCase();
+        // permanent console log
+        console.log(cmd);
+
+        /** Arguments given to command line. `args[0]` is the command name. */
+        const args = cmd.split(" ").slice(1);
+        if (cmds[args[0]]) {
+            // gives all args after the first to the command
+            cmds[args[0]].execute.apply(null, args.slice(1));
+        } else {
+            console.error(`projector error: command not found: ${args[0]}`);
+            activeWidgets.push(new ClockErr(`error: command not found: ${args[0]}`));
+        }
+
+        return true;
+    } else {
+        return false;
+    }
+}
+
+/**
+ * Checks if a string is a duration of form [d.]h:m[:s].
+ * Regex from moment.js source (MIT)
+ * @param {string} dur Duration string to check.
+ * @returns {boolean} true if duration was valid.
+ */
+function checkAspNetDuration(dur) {
+    if (dur.match(/^(\-|\+)?(?:(\d*)[. ])?(\d+)\:(\d+)(?:\:(\d+)(\.\d*)?)?$/)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+/**
+ * Replaces a widget with an error message.
+ * Must set `this.error = true` separately.
+ * @param {number} id ID of widget to replace with error message.
+ * @param {string} type The widget's type/class (lowercase).
+ * @param {string} message Error message to displace
+ */
+function showError(id, type, message) {
+    console.error(`${type}: ${message}`);
+    $(`#widget${id}`).prop("title", "");
+    $(`#widget${id}`).removeClass(type);
+    $(`#widget${id}`).addClass("error");
+    $(`#widget${id}`).html(`${type}: ${message}`);
+}
+
+
 /** List of available widgets. Widget objects must get registered here. */
 var availableWidgets = {
     "clock": Clock,
@@ -408,63 +467,6 @@ var cmds = {
     }
 };
 
-/**
- * Parses and runs commands.
- * @param {string} cmd Command to run.
- * @returns {boolean} true if command was valid
- */
-function run(cmd) {
-    if (cmd.split(" ")[0] === ">>") {
-        // then yes it is a command we need to run
-        // make all lowercase (hopefully this won't matter)
-        cmd = cmd.toLowerCase();
-        // permanent console log
-        console.log(cmd);
-
-        /** Arguments given to command line. `args[0]` is the command name. */
-        const args = cmd.split(" ").slice(1);
-        if (cmds[args[0]]) {
-            // gives all args after the first to the command
-            cmds[args[0]].execute.apply(null, args.slice(1));
-        } else {
-            console.error(`projector error: command not found: ${args[0]}`);
-            activeWidgets.push(new ClockErr(`error: command not found: ${args[0]}`));
-        }
-
-        return true;
-    } else {
-        return false;
-    }
-}
-
-/**
- * Checks if a string is a duration of form [d.]h:m[:s].
- * Regex from moment.js source (MIT)
- * @param {string} dur Duration string to check.
- * @returns {boolean} true if duration was valid.
- */
-function checkAspNetDuration(dur) {
-    if (dur.match(/^(\-|\+)?(?:(\d*)[. ])?(\d+)\:(\d+)(?:\:(\d+)(\.\d*)?)?$/)) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-/**
- * Replaces a widget with an error message.
- * Must set `this.error = true` separately.
- * @param {number} id ID of widget to replace with error message.
- * @param {string} type The widget's type/class (lowercase).
- * @param {string} message Error message to displace
- */
-function showError(id, type, message) {
-    console.error(`${type}: ${message}`);
-    $(`#widget${id}`).prop("title", "");
-    $(`#widget${id}`).removeClass(type);
-    $(`#widget${id}`).addClass("error");
-    $(`#widget${id}`).html(`${type}: ${message}`);
-}
 
 $(document).ready(function () {
     activeWidgets.push(new Clock());
