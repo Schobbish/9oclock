@@ -115,7 +115,7 @@ class Stopwatch {
         }
 
         $(`#widget${this.id}`).click(function () {
-            var id = $(this).attr('id').slice(6);
+            const id = $(this).attr('id').slice(6);
             for (const widget of activeWidgets) {
                 // find widget with that id
                 if (widget.id == id) {
@@ -239,7 +239,7 @@ class Timer {
 
         // give it an event handler
         $(`#widget${this.id}`).click(function () {
-            var id = $(this).attr('id').slice(6);
+            const id = $(this).attr('id').slice(6);
             for (const widget of activeWidgets) {
                 // find widget with that id
                 if (widget.id == id) {
@@ -394,20 +394,11 @@ function showError(id, type, message) {
 
 
 /** List of available widgets. Widget objects must get registered here. */
-var availableWidgets = {
+const availableWidgets = {
     "clock": Clock,
     "stopwatch": Stopwatch,
     "timer": Timer
 };
-/** List of widgets currently active on the page. */
-var activeWidgets = [];
-/** For widget IDs */
-var widgetCounter = 0;
-/**
- * Inverval, in ms, at which the website updates.
- * 50 is normal, 10 for when there is a stopwatch or a timer < 60s
- */
-var interval = 50;
 /** For use with moment#calendar. */
 const calendarSettings = {
     lastDay: "[yesterday at] LTS",
@@ -419,7 +410,7 @@ const calendarSettings = {
 };
 
 /** List of commands. Commands live here. */
-var cmds = {
+const cmds = {
     // each command name should have an object with a `run()` function inside
     "create": {
         /**
@@ -466,6 +457,16 @@ var cmds = {
         }
     }
 };
+
+/** List of widgets currently active on the page. */
+var activeWidgets = [];
+/** For widget IDs */
+var widgetCounter = 0;
+/**
+ * Inverval, in ms, at which the website updates.
+ * 50 is normal, 10 for when there is a stopwatch or a timer < 60s
+ */
+var interval = 50;
 
 
 $(document).ready(function () {
