@@ -184,11 +184,9 @@ class Stopwatch {
         if (dur.asHours() >= 1) {
             outStr += Math.floor(dur.asHours()) + ":";
         }
-
         outStr += dur.minutes().toString().padStart(2, 0) + ":";
         outStr += dur.seconds().toString().padStart(2, 0) + ".";
         outStr += dur.milliseconds().toString().padStart(3, 0).slice(0, 2);
-
         return outStr;
     }
 
@@ -275,11 +273,11 @@ class Timer {
         }
     }
 
-    /** Pauses the timer and updates this.timeElapsed. */
+    /** Pauses the timer and updates this.timeElapsed and this.timeLeft. */
     pause() {
         if (!this.error && !this.finished) {
             this.going = false;
-            // update timeElapsed
+            // update timeElapsed and timeLeft
             this.timeElapsed += moment().diff(this.startTime);
             this.timeLeft = moment.duration(this.len - this.timeElapsed);
             this.stopTime = moment();
@@ -292,15 +290,17 @@ class Timer {
 
     /**
      * Gets the time left as a string.
-     * @returns {string} The time left.
+     * @returns {string} The time left in the form [[h:]m:]s[.cc]
      */
     timeToString() {
         var outStr = "";
 
+        // don't want hours or minutes if unnecessary
+        // if less than one minute show centiseconds.
         if (this.timeLeft.asHours() >= 1) {
+            // unlike Stopwatch.totalTime timeLeft updates every cycle
             outStr += Math.floor(this.timeLeft.asHours()) + ":";
         }
-
         if (this.timeLeft.asMinutes() >= 1) {
             outStr += this.timeLeft.minutes().toString().padStart(2, 0) + ":";
             outStr += this.timeLeft.seconds().toString().padStart(2, 0);
@@ -308,22 +308,23 @@ class Timer {
             outStr += this.timeLeft.seconds().toString().padStart(2, 0);
             outStr += "." + this.timeLeft.milliseconds().toString().padStart(3, 0).slice(0, 2);
         }
-
         return outStr;
     }
 
     /** Updates the time on the timer. */
     update() {
-        if (this.finished) {
-            $(`#widget${this.id}`).html("00.00");
-        } else if (this.going && !this.error) {
+        if (this.going && !this.finished && !this.error) {
             this.timeLeft = moment.duration(this.len - (this.timeElapsed + moment().diff(this.startTime)));
+
+            // test if timer is done
             if (this.timeLeft.asMilliseconds() <= 0) {
                 this.finished = true;
                 this.stopTime = moment();
                 this.title = `Ended ${this.stopTime.calendar(null, calendarSettings)}`;
                 $(`#widget${this.id}`).prop("title", this.title);
+                $(`#widget${this.id}`).html("00.00");
             } else {
+                // faster interval if less than one min (centisecs are showing)
                 if (this.timeLeft.asMinutes() < 1) {
                     interval = 10;
                 }

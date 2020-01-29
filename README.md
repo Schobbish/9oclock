@@ -8,11 +8,15 @@ You can generate timers, countdown clocks, and stopwatches. You can also change 
 1. [Commands](#commands)
     1. [`create`](#create)
     2. [`delete`](#delete)
-    3. [`done`](#done)
-    4. [`stop!`](#stop)
-    5. [`restart`](#restart)
+    3. [`style`](#style)
+    4. [`done`](#done)
+    5. [`stop!`](#stop)
+    6. [`restart`](#restart)
 2. [Widgets](#widgets)
     1. [Clock](#clock)
+    2. [Countdown](#countdown)
+    3. [Stopwatch](#stopwatch)
+    4. [Timer](#timer)
 3. [License](#license)
 
 ## Commands
@@ -48,4 +52,4 @@ Creates a stopwatch. To start or pause the stopwatch, simply click on it. (Start
 Creates a timer. You must follow this command with a length as a duration in the form `[d.]h:m[:s]`. Partial seconds are allowed. To start or pause the timer, simply click on it. (Starts/pauses on mouse up.) The timer prints its time in the form `[[h:]mm:]ss[.cc]`, with hundredths appearing once the time is below one minute.
 
 ## License
-This whole repository is licensed under the MIT License. What content exists on the website itself is licensed under a Creative Commons Attribution 4.0 International License.
+This whole repository is licensed under the MIT License. What little content exists on the website itself is licensed under a Creative Commons Attribution 4.0 International License just in case.
