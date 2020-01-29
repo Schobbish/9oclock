@@ -5,7 +5,10 @@
  */
 
 
-/** Generic error display. */
+/**
+ * Generic error display.
+ * Should use showError() to replace a widget with an error
+ */
 class ClockErr {
     /**
      * Creates an error message.
@@ -56,11 +59,7 @@ class Clock {
             } else {
                 // display error
                 this.error = true;
-                console.error(`clock: invalid time zone: ${timeZone}`);
-                // remove clock class and add error class (questionable?)
-                $(`#widget${this.id}`).removeClass("clock");
-                $(`#widget${this.id}`).addClass("error");
-                $(`#widget${this.id}`).html(`clock: invalid time zone: ${timeZone}`);
+                showError(this.id, "clock", `invalid time zone: ${timeZone}`);
             }
         }
     }
@@ -111,11 +110,7 @@ class Stopwatch {
             } else {
                 // display error
                 this.error = true;
-                console.error(`stopwatch: invalid start time: ${startTime}`);
-                $(`#widget${this.id}`).prop("title", "");
-                $(`#widget${this.id}`).removeClass("stopwatch");
-                $(`#widget${this.id}`).addClass("error");
-                $(`#widget${this.id}`).html(`stopwatch: invalid start time: ${startTime}`);
+                showError(this.id, "stopwatch", `invalid start time: ${startTime}`);
             }
         }
 
@@ -235,19 +230,11 @@ class Timer {
                 $(`#widget${this.id}`).html(this.timeToString());
             } else {
                 this.error = true;
-                console.error(`timer: invalid length: ${length}`);
-                $(`#widget${this.id}`).prop("title", "");
-                $(`#widget${this.id}`).removeClass("timer");
-                $(`#widget${this.id}`).addClass("error");
-                $(`#widget${this.id}`).html(`timer: invalid length: ${length}`);
+                showError(this.id, "timer", `invalid length: ${length}`);
             }
         } else {
             this.error = true;
-            console.error("timer: length is required");
-            $(`#widget${this.id}`).prop("title", "");
-            $(`#widget${this.id}`).removeClass("timer");
-            $(`#widget${this.id}`).addClass("error");
-            $(`#widget${this.id}`).html("timer: length is required");
+            showError(this.id, "timer", "length is required");
         }
 
         // give it an event handler
@@ -464,6 +451,20 @@ function checkAspNetDuration(dur) {
     }
 }
 
+/**
+ * Replaces a widget with an error message.
+ * Must set `this.error = true` separately.
+ * @param {number} id ID of widget to replace with error message.
+ * @param {string} type The widget's type/class (lowercase).
+ * @param {string} message Error message to displace
+ */
+function showError(id, type, message) {
+    console.error(`${type}: ${message}`);
+    $(`#widget${id}`).prop("title", "");
+    $(`#widget${id}`).removeClass(type);
+    $(`#widget${id}`).addClass("error");
+    $(`#widget${id}`).html(`${type}: ${message}`);
+}
 
 $(document).ready(function () {
     activeWidgets.push(new Clock());
