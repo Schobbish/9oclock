@@ -4,6 +4,7 @@
  * @license MIT
  * @todo insert and style commands
  * @todo countdown and text widgets
+ * @todo rename to just "clock"
  */
 
 
