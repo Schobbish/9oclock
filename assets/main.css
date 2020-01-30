@@ -1,48 +1,51 @@
 body {
    /* to actually resize text on ios */
    -webkit-text-size-adjust: 100%;
-   /*background-image: url("https://i.imgur.com/Qx3Rg38.jpg");*/
    background-color: #000;
 }
 
 #main *, textarea {
+   background-color: transparent;
    text-align: center;
    font-family: 'Muli', sans-serif;
-   background-color: transparent;
    color: #fff;
 }
-h1:not(:first-of-type) {
-   margin-top: 0;
-}
 textarea {
-   width: calc(100% - 0.2em);
-   padding: 0.1em;
+   width: 100%;
+   padding: 0;
    border: none;
    resize: none;
    font-size: 3em;
-   font-weight: 300;
+   font-weight: 400;
 }
 
+/* keep default margin-top for first h1 */
+h1:not(:first-of-type) {
+   margin-top: 0;
+}
+/* clock based widgets */
 .clock, .timer, .stopwatch, .countdown, .world {
+   margin-bottom: 0.1em;
    font-size: 6em;
    font-weight: 300;
-   margin-bottom: 0.1em;
+}
+/* text based widgets */
+.error, .text {
+   margin-bottom: 0.2em;
+   font-size: 3em;
+   font-weight: 400;
 }
 .clock {
-    cursor: none;
-}
-.error {
-   font-size: 3em;
-   margin-bottom: 0.2em;
+   cursor: none;
 }
 
 footer {
    width: 100%;
    position: fixed;
    bottom: 0;
+   text-align: center;
    font-family: 'Muli', sans-serif;
    font-size: 0.75em;
-   text-align: center;
 }
 footer p, footer a {
    color: #282828;
