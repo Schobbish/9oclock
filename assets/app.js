@@ -2,6 +2,8 @@
  * @file Brains of the projector clock.
  * @author Nathaniel Adam
  * @license MIT
+ * @todo insert and style commands
+ * @todo countdown and text widgets
  */
 
 

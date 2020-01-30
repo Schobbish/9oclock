@@ -24,7 +24,7 @@ h1:not(:first-of-type) {
    margin-top: 0;
 }
 /* clock based widgets */
-.clock, .timer, .stopwatch, .countdown, .world {
+.clock, .timer, .stopwatch, .countdown {
    margin-bottom: 0.1em;
    font-size: 6em;
    font-weight: 300;
