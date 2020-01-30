@@ -2,41 +2,49 @@ body {
    /* to actually resize text on ios */
    -webkit-text-size-adjust: 100%;
    /*background-image: url("https://i.imgur.com/Qx3Rg38.jpg");*/
-   background-color: #000000;
+   background-color: #000;
 }
+
 #main *, textarea {
    text-align: center;
    font-family: 'Muli', sans-serif;
    background-color: transparent;
-   color: #ffffff;
+   color: #fff;
 }
 h1:not(:first-of-type) {
-    margin-top: 0;
+   margin-top: 0;
 }
 textarea {
-   width: 100%;
+   width: calc(100% - 0.2em);
+   padding: 0.1em;
    border: none;
    resize: none;
-   font-size: 100px;
+   font-size: 3em;
    font-weight: 300;
 }
+
 .clock, .timer, .stopwatch, .countdown, .world {
-   font-size: 100px;
+   font-size: 6em;
    font-weight: 300;
-   margin-bottom: 10px;
+   margin-bottom: 0.1em;
 }
 .clock {
     cursor: none;
 }
+.error {
+   font-size: 3em;
+   margin-bottom: 0.2em;
+}
+
 footer {
    width: 100%;
    position: fixed;
    bottom: 0;
+   font-family: 'Muli', sans-serif;
+   font-size: 0.75em;
+   text-align: center;
 }
 footer p, footer a {
-   font-family: 'Muli', sans-serif;
-   font-size: 10px;
-   text-align: center;
    color: #282828;
 }
 footer a:hover {

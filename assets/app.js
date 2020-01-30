@@ -200,7 +200,7 @@ class Stopwatch {
 }
 
 
-/** Timer widget */
+/** Timer widget. */
 class Timer {
     /**
      * Creates a timer.
@@ -290,7 +290,7 @@ class Timer {
 
     /**
      * Gets the time left as a string.
-     * @returns {string} The time left in the form [[h:]m:]s[.cc]
+     * @returns {string} The time left in the form [[h:]m:]s[.cc].
      */
     timeToString() {
         var outStr = "";
@@ -436,7 +436,10 @@ if (!window.String.prototype.padStart) {
 }
 
 
-/** List of available widgets. Widget objects must get registered here. */
+/**
+ * List of available widgets.
+ * Widget classes must be here so that they can be created via string.
+ */
 const availableWidgets = {
     "clock": Clock,
     "stopwatch": Stopwatch,
@@ -451,9 +454,11 @@ const calendarSettings = {
     nextWeek: "[next] dddd [at] LTS",
     sameElse: "YYYY-MM-DD [at] LTS"
 };
-/** List of commands. Commands live here. */
+/**
+ * List of commands. Commands live here so they can be run via string.
+ * Each command name should have an object with an `execute()` function inside
+ */
 const cmds = {
-    // each command name should have an object with a `run()` function inside
     "create": {
         /**
          * Creates a new widget.
