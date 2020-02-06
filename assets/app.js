@@ -3,7 +3,7 @@
  * @author Nathaniel Adam
  * @license MIT
  * @todo insert and style commands
- * @todo countdown and text widgets
+ * @todo countdown, text, and blank (whitespace) widgets
  * @todo rename to just "clock"
  */
 
