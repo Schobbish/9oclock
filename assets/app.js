@@ -3,7 +3,7 @@
  * @author Nathaniel Adam
  * @license MIT
  * @todo insert and style commands
- * @todo countdown, text, and blank (whitespace) widgets
+ * @todo text and blank (whitespace) widgets
  * @todo rename to just "clock"
  */
 
@@ -81,6 +81,96 @@ class Clock {
             }
         } else {
             $(`#widget${this.id}`).html(moment().format("LTS"));
+        }
+    }
+}
+
+
+/** Countdown widget */
+class Countdown {
+    /**
+     * Creates a countdown timer.
+     * @param {string} time Time to count down to
+     */
+    constructor(time) {
+        this.error = false;
+        this.finished = false;
+        this.id = widgetCounter;
+        widgetCounter++;
+
+        $("#main").append(`<h1 class="countdown" id="widget${this.id}" title="${this.title}">countdown</h1>`);
+
+        if (time) {
+            // validate time using checkAspNetDuration for consistency
+            if (checkAspNetDuration(time)) {
+                // let moment.js do the parsing
+                var timeAsDur = moment.duration(time);
+                // replace the current time with the parts of the duration
+                this.targetTime = moment();
+                this.targetTime.milliseconds(timeAsDur.milliseconds());
+                this.targetTime.seconds(timeAsDur.seconds());
+                this.targetTime.minutes(timeAsDur.minutes());
+                this.targetTime.hours(timeAsDur.hours());
+                // if targetTime has passed, add one more day
+                if (this.targetTime < moment()) {
+                    this.targetTime.add(1, "day");
+                }
+                // add additional days from duration
+                this.targetTime.add(timeAsDur.days(), "day");
+                this.title = this.targetTime.format("[Counting down to] Y-MM-DD LTS");
+                $(`#widget${this.id}`).prop("title", this.title);
+            } else {
+                this.error = true;
+                showError(this.id, "countdown", `invalid time: ${time}`);
+            }
+        } else {
+            this.error = true;
+            showError(this.id, "countdown", "time is required");
+        }
+    }
+
+    /**
+     * Gets the time left as a string.
+     * Copy of from Timer.timeToString() (not good)
+     * @returns {string} The time left in the form [[h:]m:]s[.cc].
+     */
+    timeToString() {
+        var outStr = "";
+
+        // don't want hours or minutes if unnecessary
+        // if less than one minute show centiseconds.
+        if (this.timeLeft.asHours() >= 1) {
+            // unlike Stopwatch.totalTime timeLeft updates every cycle
+            outStr += Math.floor(this.timeLeft.asHours()) + ":";
+        }
+        if (this.timeLeft.asMinutes() >= 1) {
+            outStr += this.timeLeft.minutes().toString().padStart(2, 0) + ":";
+            outStr += this.timeLeft.seconds().toString().padStart(2, 0);
+        } else {
+            outStr += this.timeLeft.seconds().toString().padStart(2, 0);
+            outStr += "." + this.timeLeft.milliseconds().toString().padStart(3, 0).slice(0, 2);
+        }
+        return outStr;
+    }
+
+    /** Updates the countdown. */
+    update() {
+        if (!this.finished && !this.error) {
+            this.timeLeft = moment.duration(this.targetTime.diff(moment()));
+
+            // test if timer is done
+            if (this.timeLeft.asMilliseconds() <= 0) {
+                this.finished = true;
+                this.title = this.targetTime.format("[Counted down to] Y-MM-DD LTS");
+                $(`#widget${this.id}`).prop("title", this.title);
+                $(`#widget${this.id}`).html("00.00");
+            } else {
+                // faster interval if less than one min (centisecs are showing)
+                if (this.timeLeft.asMinutes() < 1) {
+                    interval = 10;
+                }
+                $(`#widget${this.id}`).html(this.timeToString());
+            }
         }
     }
 }
@@ -421,9 +511,9 @@ if (!window.String.prototype.padStart) {
      * @param {padChar} string One character only!!
      *  Character to pad string to targetLength
      */
-    window.String.prototype.padStart = function(targetLength, padChar) {
+    window.String.prototype.padStart = function (targetLength, padChar) {
         if (padChar.length > 1) {
-            console.warn("This reimplementation of padStart() should only be used with single character pad strings.")
+            console.warn("This reimplementation of padStart() should only be used with single character pad strings.");
         }
         if (this.length < targetLength) {
             var outStr = padChar.toString();
@@ -441,10 +531,11 @@ if (!window.String.prototype.padStart) {
 
 /**
  * List of available widgets.
- * Widget classes must be here so that they can be created via string.
+ * Widget classes must be declared here so that they can be created via string.
  */
 const availableWidgets = {
     "clock": Clock,
+    "countdown": Countdown,
     "stopwatch": Stopwatch,
     "timer": Timer
 };
@@ -455,7 +546,7 @@ const calendarSettings = {
     nextDay: "[tomorrow at] LTS",
     lastWeek: "[last] dddd [at] LTS",
     nextWeek: "[next] dddd [at] LTS",
-    sameElse: "YYYY-MM-DD [at] LTS"
+    sameElse: "Y-MM-DD [at] LTS"
 };
 /**
  * List of commands. Commands live here so they can be run via string.
