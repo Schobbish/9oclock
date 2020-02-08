@@ -45,6 +45,9 @@ Creates a generic clock, defaulted in your time zone of course. Includes seconds
 
 You can hide the cursor behind clocks.
 
+### Countdown
+Creates a countdown. You must follow this command with the time you want to count down to. The time must be in the 24-hour format and in your time zone. Use 00:00 to count down to midnight. You may count down to a time x days ahead by adding 24x to the hour or `x.` (include the dot) before the time. Currently there's no way to record time since a date passed, but that may be added in the future.
+
 ### Stopwatch
 Creates a stopwatch. To start or pause the stopwatch, simply click on it. (Starts/pauses on mouse up.) You may specify the time to start the stopwatch at in the form `[d.]h:m[:s]`. Partial seconds are allowed. The stopwatch prints its time in the form `[h:]mm:ss.cc`. The hover text shows when the stopwatch was started.
 
