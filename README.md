@@ -54,5 +54,8 @@ Creates a stopwatch. To start or pause the stopwatch, simply click on it. (Start
 ### Timer
 Creates a timer. You must follow this command with a length as a duration in the form `[d.]h:m[:s]`. Partial seconds are allowed. To start or pause the timer, simply click on it. (Starts/pauses on mouse up.) The timer prints its time in the form `[[h:]mm:]ss[.cc]`, with hundredths appearing once the time is below one minute.
 
+### Text
+Creates some text. Follow the command with the text you want. Use the `blank` widget to create whitespace, rather than an empty `text` widget. By default, the text will be half the size as the other widgets.
+
 ## License
 This whole repository is licensed under the MIT License. What little content exists on the website itself is licensed under a Creative Commons Attribution 4.0 International License just in case.

@@ -432,13 +432,15 @@ class Timer {
 class Text {
     /**
      * Creates some text!!
-     * @param {string} message Text to put on the widget!!
+     * Text will have an nbsp appended to it so there isn't an invisible widget.
+     * @param {...string} message Text to put on the widget!!
+     *  Multiple args will be joined with a space as the separator.
      */
-    constructor(message) {
-        this.text = message;
+    constructor(...message) {
+        this.text = message.join(" ") + "\xa0";
         this.id = widgetCounter;
         widgetCounter++;
-        $("#main").append(`<h1 class="text" id="widget${this.id}">${message}</h1>`);
+        $("#main").append(`<h1 class="text" id="widget${this.id}">${this.text}</h1>`);
     }
     /** Only because it's required */
     update() {
