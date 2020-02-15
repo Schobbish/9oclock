@@ -3,7 +3,7 @@
  * @author Nathaniel Adam
  * @license MIT
  * @todo insert and style commands
- * @todo text and blank (whitespace) widgets
+ * @todo blank (whitespace) widget
  * @todo rename to just "clock"
  */
 
@@ -428,6 +428,25 @@ class Timer {
 }
 
 
+/** Text widget */
+class Text {
+    /**
+     * Creates some text!!
+     * @param {string} message Text to put on the widget!!
+     */
+    constructor(message) {
+        this.text = message;
+        this.id = widgetCounter;
+        widgetCounter++;
+        $("#main").append(`<h1 class="text" id="widget${this.id}">${message}</h1>`);
+    }
+    /** Only because it's required */
+    update() {
+
+    }
+}
+
+
 /**
  * Parses and runs commands.
  * @param {string} cmd Command to run.
@@ -537,7 +556,8 @@ const availableWidgets = {
     "clock": Clock,
     "countdown": Countdown,
     "stopwatch": Stopwatch,
-    "timer": Timer
+    "timer": Timer,
+    "text": Text
 };
 /** For use with moment#calendar. */
 const calendarSettings = {
