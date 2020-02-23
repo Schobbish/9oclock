@@ -24,20 +24,22 @@ textarea {
 h1:not(:first-of-type) {
     margin-top: 0;
 }
-/* clock based widgets */
-.clock, .timer, .stopwatch, .countdown {
+/* interactive widgets */
+.clock, .countdown, .stopwatch, .timer {
+    height: 1.25em;
     margin-bottom: 0.1em;
     font-size: 6em;
     font-weight: 300;
 }
-/* text based widgets */
-.error, .text {
+.clock {
+    cursor: none;
+}
+/* static widgets */
+.error, .text, .timestamp {
+    height: 1.25em;
     margin-bottom: 0.2em;
     font-size: 3em;
     font-weight: 400;
-}
-.clock {
-    cursor: none;
 }
 .blank {
     height: 1em;

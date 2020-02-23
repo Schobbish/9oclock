@@ -3,7 +3,6 @@
  * @author Nathaniel Adam
  * @license MIT
  * @todo insert and style commands
- * @todo blank (whitespace) widget
  * @todo rename to just "clock"
  */
 
@@ -26,9 +25,7 @@ class ClockErr {
     }
 
     /** Does nothing. */
-    update() {
-        // no update action
-    }
+    update() { }
 }
 
 
@@ -430,7 +427,23 @@ class Timer {
 
 /** Timestamp widget. */
 class Timestamp {
+    /**
+     * Creates a timestamp.
+     * @param {...string} [format] The format of the timestamp.
+     *  If omitted, ISO 8601 will be used instead.
+     */
+    constructor(...format) {
+        this.format = format.join(" ");
+        this.text = moment().format(this.format);
+        this.title = this.format ? `Given format: ${this.format}` : "No format given; ISO 8601 used instead.";
+        this.id = widgetCounter;
+        widgetCounter++;
 
+        $("#main").append(`<h1 class="timestamp" id="widget${this.id}" title="${this.title}">${this.text}</h1>`);
+    }
+
+    /** Only because it's required */
+    update() { }
 }
 
 
@@ -448,7 +461,7 @@ class Blank {
         this.id = widgetCounter;
         widgetCounter++;
 
-        $("#main").append(`<h1 class="blank" id="widget${this.id}" style="height: ${this.height};">\xa0</h1>`);
+        $("#main").append(`<h1 class="blank" id="widget${this.id}" style="height: ${this.height};"></h1>`);
 
         // build title
         this.title = `Given height: ${this.height}.\nComputed height: `;
@@ -458,9 +471,7 @@ class Blank {
         $(`#widget${this.id}`).prop("title", this.title);
     }
     /** Only because it's required */
-    update() {
-
-    }
+    update() { }
 }
 
 
@@ -473,15 +484,13 @@ class Text {
      *  Multiple args will be joined with a space as the separator.
      */
     constructor(...message) {
-        this.text = message.join(" ") + "\xa0";
+        this.text = message.join(" ");
         this.id = widgetCounter;
         widgetCounter++;
         $("#main").append(`<h1 class="text" id="widget${this.id}">${this.text}</h1>`);
     }
     /** Only because it's required */
-    update() {
-
-    }
+    update() { }
 }
 
 

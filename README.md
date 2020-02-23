@@ -132,7 +132,7 @@ Click on the widget to start/pause it. The output format will be `[hh:]mm:ss` wh
 >> create timestamp [format]
 ```
 
-Creates a timestamp in the form `Y-MM-dd hh:mm:ss` or the format of your choice. Because this website uses the moment.js library, please go [here](https://momentjs.com/docs/#/displaying/format/) to see how to format formats.
+Creates a timestamp in the ISO 8601 format or the format of your choice. Because this website uses the moment.js library, please go [here](https://momentjs.com/docs/#/displaying/format/) to see how to format formats. You may hover over the timestamp to see the format it's using.
 
 ### Blank
 
@@ -150,7 +150,7 @@ The `font-size` of the widget is 3.75em (3em \* 1.25 line height so that 1em is 
 >> create text [text]
 ```
 
-Creates a widget which displays `[text]`. By default, the font size will be half that of the other widgets (3em vs. 6em). If no text is given, a non-breaking space will be displayed instead.
+Creates a widget which displays `[text]`. By default, the font size will be half that of the other widgets (3em vs. 6em).
 
 ## Reporting Bugs
 To report a bug, please create an issue describing the bug (what you expected to happen vs. what actually happened). Please include the console output and what browser you're using (and its version).
