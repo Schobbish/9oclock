@@ -428,6 +428,12 @@ class Timer {
 }
 
 
+/** Timestamp widget. */
+class Timestamp {
+
+}
+
+
 /** Whitespace widget. */
 class Blank {
     /**
@@ -436,13 +442,20 @@ class Blank {
      */
     constructor(height) {
         if (!height) {
-            height = "1em"
+            height = "1em";
         }
         this.height = height;
         this.id = widgetCounter;
         widgetCounter++;
 
         $("#main").append(`<h1 class="blank" id="widget${this.id}" style="height: ${this.height};">\xa0</h1>`);
+
+        // build title
+        this.title = `Given height: ${this.height}.\nComputed height: `;
+        this.title += $(`#widget${this.id}`).height();
+        this.title += "px (including margins: ";
+        this.title += $(`#widget${this.id}`).outerHeight(true) + "px).";
+        $(`#widget${this.id}`).prop("title", this.title);
     }
     /** Only because it's required */
     update() {

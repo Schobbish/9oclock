@@ -33,7 +33,7 @@ You can give commands to the website in the textarea element. Each command shoul
 >> create <widget> [args...]
 ```
 
-Creates widget `<widget>`. Some widgets accept additional arguments. See [Widgets](#widgets) for more information. This command will show an error instead if the widget does not exist.
+Creates widget `<widget>`. Some widgets accept additional arguments. See [Widgets](#widgets) for more information. This command will produce an error instead if the widget does not exist.
 
 ### Delete
 
@@ -49,7 +49,7 @@ Deletes the widget at `<index>`. The top widget has index zero. There is no way 
 >> insert <index> <widget> [args...]
 ```
 
-Inserts `<widget>` at index `<index>`. Some widgets accept additional arguments. See [Widgets](#widgets) for more information. This command will show an error instead if the widget does not exist.
+Inserts `<widget>` at index `<index>`. Some widgets accept additional arguments. See [Widgets](#widgets) for more information. This command will produce an error instead if the widget does not exist.
 
 ### Style
 
@@ -57,7 +57,7 @@ Inserts `<widget>` at index `<index>`. Some widgets accept additional arguments.
 >> style <selector> <css>
 ```
 
-Gives the elements selected by `<selector>` a `style` property with value `<css>`. This will not show an error if your selector or CSS is invalid.
+Gives the elements selected by `<selector>` a `style` property with value `<css>`. This will not produce an error if your selector or CSS is invalid.
 
 ### Done
 
@@ -140,7 +140,7 @@ Creates a timestamp in the form `Y-MM-dd hh:mm:ss` or the format of your choice.
 >> create blank [height]
 ```
 
-Creates some whitespace of a default height or `[height]`. `[height]` should be some type of length that CSS can understand. The default height is 1em.
+Creates some whitespace of a default height or `[height]`. `[height]` should be some type of length that CSS can understand. The default height is 1em. An invalid height does not produce an error, but you can hover over the widget to view some diagnostic information if needed (or use DevTools).
 
 The `font-size` of the widget is 3.75em (3em \* 1.25 line height so that 1em is the actual height of the line), which usually translates to 60px. Note that the widget also gets a `margin-bottom` of 0.16em, which is usually 9.6px.
 

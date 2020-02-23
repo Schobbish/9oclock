@@ -40,6 +40,7 @@ h1:not(:first-of-type) {
     cursor: none;
 }
 .blank {
+    height: 1em;
     margin-bottom: 0.16em;
     font-size: 3.75em;
     font-weight: 400;
