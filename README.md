@@ -17,9 +17,10 @@ You can generate timers, countdown clocks, and stopwatches. You can also change 
     1. [Clock](#clock)
     2. [Countdown](#countdown)
     3. [Stopwatch](#stopwatch)
-    4. [Timestamp](#timestamp)
-    5. [Blank](#blank)
-    6. [Timer](#timer)
+    4. [Timer](#timer)
+    5. [Timestamp](#timestamp)
+    6. [Blank](#blank)
+    7. [Text](#text)
 3. [Reporting Bugs](#reporting-bugs)
 4. [License](#license)
 
