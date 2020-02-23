@@ -8,6 +8,7 @@ body {
     background-color: transparent;
     text-align: center;
     font-family: 'Muli', sans-serif;
+    line-height: 1.25;
     color: #fff;
 }
 textarea {
@@ -37,6 +38,12 @@ h1:not(:first-of-type) {
 }
 .clock {
     cursor: none;
+}
+.blank {
+    margin-bottom: 0.16em;
+    font-size: 3.75em;
+    font-weight: 400;
+    overflow: hidden;
 }
 
 footer {

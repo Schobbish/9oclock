@@ -428,7 +428,30 @@ class Timer {
 }
 
 
-/** Text widget */
+/** Whitespace widget. */
+class Blank {
+    /**
+     * Creates the whitespace.
+     * @param {string} [height="3.2em"] Height of whitespace.
+     */
+    constructor(height) {
+        if (!height) {
+            height = "1em"
+        }
+        this.height = height;
+        this.id = widgetCounter;
+        widgetCounter++;
+
+        $("#main").append(`<h1 class="blank" id="widget${this.id}" style="height: ${this.height};">\xa0</h1>`);
+    }
+    /** Only because it's required */
+    update() {
+
+    }
+}
+
+
+/** Text widget. */
 class Text {
     /**
      * Creates some text!!
@@ -457,8 +480,7 @@ class Text {
 function run(cmd) {
     if (cmd.split(" ")[0] === ">>") {
         // then yes it is a command we need to run
-        // make all lowercase (hopefully this won't matter)
-        cmd = cmd.toLowerCase();
+
         // permanent console log
         console.log(cmd);
 
@@ -559,6 +581,8 @@ const availableWidgets = {
     "countdown": Countdown,
     "stopwatch": Stopwatch,
     "timer": Timer,
+    "timestamp": Timestamp,
+    "blank": Blank,
     "text": Text
 };
 /** For use with moment#calendar. */
@@ -609,6 +633,10 @@ const cmds = {
                 console.error(`projector error: invalid index to delete: ${index}`);
             }
         }
+
+    }, "insert": {
+
+    }, "style": {
 
     }, "done": {
         /** Gets cursor out of textarea. */

@@ -54,10 +54,10 @@ Inserts `<widget>` at index `<index>`. Some widgets accept additional arguments.
 ### Style
 
 ```
->> style <selector> <style>
+>> style <selector> <css>
 ```
 
-Gives the elements selected by `<selector>` a `style` property with value `<style>`.
+Gives the elements selected by `<selector>` a `style` property with value `<css>`. This will not show an error if your selector or CSS is invalid.
 
 ### Done
 
@@ -140,7 +140,9 @@ Creates a timestamp in the form `Y-MM-dd hh:mm:ss` or the format of your choice.
 >> create blank [height]
 ```
 
-Creates some whitespace of height 6em or `[height]`. `[height]` should be some type of length that CSS can understand. If unitless, it is assumed you want pixels. Note that this command simply sets the `font-size` property of a non-breaking space character and that every widget gets a `margin-bottom: 0.1em` property, including this one. The value of 0.1em varies depending on browser settings, but it will usually be 3.2px (since widgets are `<h1>` elements).
+Creates some whitespace of a default height or `[height]`. `[height]` should be some type of length that CSS can understand. The default height is 1em.
+
+The `font-size` of the widget is 3.75em (3em \* 1.25 line height so that 1em is the actual height of the line), which usually translates to 60px. Note that the widget also gets a `margin-bottom` of 0.16em, which is usually 9.6px.
 
 ### Text
 
