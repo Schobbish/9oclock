@@ -8,7 +8,6 @@ You can generate timers, countdown clocks, and stopwatches. You can also change 
 1. [Commands](#commands)
     1. [Create](#create)
     2. [Delete](#delete)
-    3. [Insert](#insert)
     4. [Style](#style)
     5. [Done](#done)
     6. [Stop](#stop)
@@ -42,14 +41,6 @@ Creates widget `<widget>`. Some widgets accept additional arguments. See [Widget
 ```
 
 Deletes the widget at `<index>`. The top widget has index zero. There is no way to delete by id.
-
-### Insert
-
-```
->> insert <index> <widget> [args...]
-```
-
-Inserts `<widget>` at index `<index>`. Some widgets accept additional arguments. See [Widgets](#widgets) for more information. This command will produce an error instead if the widget does not exist.
 
 ### Style
 

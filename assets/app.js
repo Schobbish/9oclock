@@ -2,7 +2,7 @@
  * @file Brains of the projector clock.
  * @author Nathaniel Adam
  * @license MIT
- * @todo insert and style commands
+ * @todo style command
  * @todo rename to just "clock"
  */
 
@@ -655,8 +655,6 @@ const cmds = {
                 console.error(`projector error: invalid index to delete: ${index}`);
             }
         }
-
-    }, "insert": {
 
     }, "style": {
 
