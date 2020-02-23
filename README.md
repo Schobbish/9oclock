@@ -20,7 +20,8 @@ You can generate timers, countdown clocks, and stopwatches. You can also change 
     4. [Timestamp](#timestamp)
     5. [Blank](#blank)
     6. [Timer](#timer)
-3. [License](#license)
+3. [Reporting Bugs](#reporting-bugs)
+4. [License](#license)
 
 ## Commands
 You can give commands to the website in the textarea element. Each command should be prefixed with `>>␣` (with a space after). Fun fact if you hit shift+. (>) it will focus the textarea for you (does not work on older browsers). You can also type normal text in the textarea to show a message or something. Commands are case-sensitive.
@@ -146,7 +147,10 @@ Creates some whitespace of height 6em or `[height]`. `[height]` should be some t
 >> create text [text]
 ```
 
-Creates a widget which displays `[text]`. By default, the font size will be half that of the other widgets (3em vs 6em). If no text is given, a non-breaking space will be displayed instead.
+Creates a widget which displays `[text]`. By default, the font size will be half that of the other widgets (3em vs. 6em). If no text is given, a non-breaking space will be displayed instead.
+
+## Reporting Bugs
+To report a bug, please create an issue describing the bug (what you expected to happen vs. what actually happened). Please include the console output and what browser you're using (and its version).
 
 ## License
 This whole repository is licensed under the MIT License. What little content exists on the website itself is licensed under a Creative Commons Attribution 4.0 International License just in case.
