@@ -24,7 +24,7 @@ textarea {
 h1:not(:first-of-type) {
     margin-top: 0;
 }
-/* interactive widgets */
+/* dynamic widgets */
 .clock, .countdown, .stopwatch, .timer {
     height: 1.25em;
     margin-bottom: 0.1em;
@@ -33,6 +33,9 @@ h1:not(:first-of-type) {
 }
 .clock {
     cursor: none;
+}
+.finished {
+    color: red;
 }
 /* static widgets */
 .error, .text, .timestamp {

@@ -2,7 +2,6 @@
  * @file Brains of the projector clock.
  * @author Nathaniel Adam
  * @license MIT
- * @todo style command
  * @todo rename to just "clock"
  */
 
@@ -22,6 +21,7 @@ class ClockErr {
         widgetCounter++;
 
         $("#main").append(`<h1 class="error" id="widget${this.id}">${this.display}</h1>`);
+        reapplyStyles();
     }
 
     /** Does nothing. */
@@ -53,14 +53,19 @@ class Clock {
             if (tzAbbrs.hasOwnProperty(timeZone)) {
                 this.timeZone = moment().utcOffset(tzAbbrs[timeZone]).format("Z");
                 this.timeZoneName = timeZone.toUpperCase();
+                reapplyStyles();
             } else if (timeZone.match(/Z|[+-]\d\d(?::?\d\d)?/)) {
                 // regex from moment.js source for UTC offsets (MIT)
                 this.timeZone = moment().utcOffset(timeZone).format("Z");
+                reapplyStyles();
             } else {
                 // display error
                 this.error = true;
                 showError(this.id, "clock", `invalid time zone: ${timeZone}`);
             }
+        } else {
+            // need to reapply styles after any widget is made
+            reapplyStyles();
         }
     }
 
@@ -116,6 +121,7 @@ class Countdown {
                 this.targetTime.add(timeAsDur.days(), "day");
                 this.title = this.targetTime.format("[Counting down to] Y-MM-DD LTS");
                 $(`#widget${this.id}`).prop("title", this.title);
+                reapplyStyles();
             } else {
                 this.error = true;
                 showError(this.id, "countdown", `invalid time: ${time}`);
@@ -159,8 +165,11 @@ class Countdown {
             if (this.timeLeft.asMilliseconds() <= 0) {
                 this.finished = true;
                 this.title = this.targetTime.format("[Counted down to] Y-MM-DD LTS");
+
                 $(`#widget${this.id}`).prop("title", this.title);
                 $(`#widget${this.id}`).html("00.00");
+                $(`#widget${this.id}`).addClass("finished finishedCountdown");
+                reapplyStyles();
             } else {
                 // faster interval if less than one min (centisecs are showing)
                 if (this.timeLeft.asMinutes() < 1) {
@@ -192,16 +201,20 @@ class Stopwatch {
         widgetCounter++;
 
         $("#main").append(`<h1 class="stopwatch" id="widget${this.id}" title="${this.title}">00:00.00</h1>`);
+
         if (startTime) {
             // check if valid duration (asp net time span)
             if (checkAspNetDuration(startTime)) {
                 this.totalTime = moment.duration(startTime);
                 $(`#widget${this.id}`).html(this.durToString());
+                reapplyStyles();
             } else {
                 // display error
                 this.error = true;
                 showError(this.id, "stopwatch", `invalid start time: ${startTime}`);
             }
+        } else {
+            reapplyStyles();
         }
 
         $(`#widget${this.id}`).click(function () {
@@ -309,6 +322,7 @@ class Timer {
         widgetCounter++;
 
         $("#main").append(`<h1 class="timer" id="widget${this.id}" title="${this.title}">timer</h1>`);
+
         // get length from param, if no length show error
         if (length) {
             // check if good duration, else show error
@@ -316,6 +330,7 @@ class Timer {
                 this.len = moment.duration(length);
                 this.timeLeft = this.len;
                 $(`#widget${this.id}`).html(this.timeToString());
+                reapplyStyles();
             } else {
                 this.error = true;
                 showError(this.id, "timer", `invalid length: ${length}`);
@@ -349,7 +364,7 @@ class Timer {
             this.startTime = moment();
             this.going = true;
 
-            this.title = "Click to pause the stopwatch.\n";
+            this.title = "Click to pause the timer.\n";
             // if true, implies that it never has been paused
             if (!this.timeElapsed) {
                 this.title += "Started ";
@@ -359,6 +374,7 @@ class Timer {
             this.title += moment().subtract(this.timeElapsed).calendar(null, calendarSettings) + ".\n";
             this.title += "Will end ";
             this.title += moment().add(this.timeLeft).calendar(null, calendarSettings) + ".";
+
             $(`#widget${this.id}`).prop("title", this.title);
         }
     }
@@ -371,8 +387,8 @@ class Timer {
             this.timeElapsed += moment().diff(this.startTime);
             this.timeLeft = moment.duration(this.len - this.timeElapsed);
             this.stopTime = moment();
-
             this.title = "Click to start the timer.";
+
             $(`#widget${this.id}`).html(this.timeToString());
             $(`#widget${this.id}`).prop("title", this.title);
         }
@@ -411,8 +427,11 @@ class Timer {
                 this.finished = true;
                 this.stopTime = moment();
                 this.title = `Ended ${this.stopTime.calendar(null, calendarSettings)}`;
+
+                $(`#widget${this.id}`).addClass("finished finishedTimer");
                 $(`#widget${this.id}`).prop("title", this.title);
                 $(`#widget${this.id}`).html("00.00");
+                reapplyStyles();
             } else {
                 // faster interval if less than one min (centisecs are showing)
                 if (this.timeLeft.asMinutes() < 1) {
@@ -440,6 +459,7 @@ class Timestamp {
         widgetCounter++;
 
         $("#main").append(`<h1 class="timestamp" id="widget${this.id}" title="${this.title}">${this.text}</h1>`);
+        reapplyStyles();
     }
 
     /** Only because it's required */
@@ -462,6 +482,7 @@ class Blank {
         widgetCounter++;
 
         $("#main").append(`<h1 class="blank" id="widget${this.id}" style="height: ${this.height};"></h1>`);
+        reapplyStyles();
 
         // build title
         this.title = `Given height: ${this.height}.\nComputed height: `;
@@ -487,7 +508,9 @@ class Text {
         this.text = message.join(" ");
         this.id = widgetCounter;
         widgetCounter++;
+
         $("#main").append(`<h1 class="text" id="widget${this.id}">${this.text}</h1>`);
+        reapplyStyles();
     }
     /** Only because it's required */
     update() { }
@@ -553,6 +576,20 @@ function checkAspNetDuration(dur) {
     }
 }
 
+/** Reapplies the styles in appliedStyles. */
+function reapplyStyles() {
+    for (const style of appliedStyles) {
+        // append style to each applicable element's style attr
+        $(style.selector).each(function () {
+            if (!$(this).attr("style")) {
+                $(this).prop("style", style.css);
+            } else {
+                $(this).prop("style", $(this).attr("style") + style.css);
+            }
+        });
+    }
+}
+
 /**
  * Replaces a widget with an error message.
  * Must set `this.error = true` separately.
@@ -566,6 +603,7 @@ function showError(id, type, message) {
     $(`#widget${id}`).removeClass(type);
     $(`#widget${id}`).addClass("error");
     $(`#widget${id}`).html(`${type}: ${message}`);
+    reapplyStyles();
 }
 
 // in case browser doesn't support padStart
@@ -657,12 +695,40 @@ const cmds = {
         }
 
     }, "style": {
+        /**
+         * Apply some custom CSS.
+         * @param {string} selector Selector to apply CSS to.
+         * @param  {...string} css CSS to apply to selector (will be joined).
+         */
+        execute(selector, ...css) {
+            switch (selector) {
+                case "-footer":
+                    selector = "footer *";
+                    break;
+                case "-main":
+                    selector = "main *";
+                    break;
+                case "-dynamic":
+                    selector = ".clock, .countdown, .stopwatch, .timer";
+                    break;
+                case "-static":
+                    selector = ".blank, .error, .text, .timestamp";
+                    break;
+            }
+            const cssString = css.join(" ");
+            appliedStyles.push({
+                selector: selector,
+                css: cssString
+            });
+            reapplyStyles();
+        }
 
     }, "done": {
         /** Gets cursor out of textarea. */
         execute() {
             $("textarea").blur();
         }
+
     }, "stop!": {
         /** Stops the recursive setTimeout loop. */
         execute() {
@@ -670,6 +736,7 @@ const cmds = {
             emergencyStopped = true;
             console.warn("Emergency stop.");
         }
+
     }, "restart": {
         /** Restarts the setTimeout loop. Only works if it was stopped. */
         execute() {
@@ -680,6 +747,7 @@ const cmds = {
                 console.warn("Execution is not stopped.");
             }
         }
+
     }
 };
 
@@ -687,6 +755,11 @@ const cmds = {
 var activeWidgets = [];
 /** For widget IDs */
 var widgetCounter = 0;
+/**
+ * List of applied custom styles.
+ * Each element is an objet with a selector property and css property.
+ */
+var appliedStyles = [];
 /**
  * Inverval, in ms, at which the website updates.
  * 50 is normal, 10 for when there is a stopwatch or a timer < 60s

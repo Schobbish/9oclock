@@ -8,23 +8,23 @@ You can generate timers, countdown clocks, and stopwatches. You can also change 
 1. [Commands](#commands)
     1. [Create](#create)
     2. [Delete](#delete)
-    4. [Style](#style)
-    5. [Done](#done)
-    6. [Stop](#stop)
-    7. [Restart](#restart)
+    3. [Style](#style)
+    4. [Done](#done)
+    5. [Stop](#stop)
+    6. [Restart](#restart)
 2. [Widgets](#widgets)
     1. [Clock](#clock)
     2. [Countdown](#countdown)
     3. [Stopwatch](#stopwatch)
     4. [Timer](#timer)
-    5. [Timestamp](#timestamp)
-    6. [Blank](#blank)
-    7. [Text](#text)
+    5. [Blank](#blank)
+    6. [Text](#text)
+    7. [Timestamp](#timestamp)
 3. [Reporting Bugs](#reporting-bugs)
 4. [License](#license)
 
 ## Commands
-You can give commands to the website in the textarea element. Each command should be prefixed with `>>␣` (with a space after). Fun fact if you hit shift+. (>) it will focus the textarea for you (does not work on older browsers). You can also type normal text in the textarea to show a message or something. Commands are case-sensitive.
+You can give commands to the website in the textarea element. Each command should be prefixed with `>>␣` (with a space after). Fun fact if you hit shift+. (>) it will focus the textarea for you (does not work on older browsers). If you want, you can write a script beforehand and then copy and paste it into the box and it'll run it for you. You can also type normal text in the textarea to show a message or something. Commands are case-sensitive.
 
 ### Create
 
@@ -48,7 +48,31 @@ Deletes the widget at `<index>`. The top widget has index zero. There is no way 
 >> style <selector> <css>
 ```
 
-Gives the elements selected by `<selector>` a `style` property with value `<css>`. This will not produce an error if your selector or CSS is invalid.
+Gives the elements selected by `<selector>` a `style` property with value `<css>`. Note: `<selector>` cannot contain any spaces. This will not produce an error if your selector or CSS is invalid.
+
+Here are some selectors and their description:
+
+|  Selector             | Description |
+|-----------------------|-------------|
+| `#main`               | The div where all the widgets are.    |
+| `#cli`                | The textarea. |
+| `.clock`              | Clock widgets |
+| `.countdown`          | Countdown widgets |
+| `.stopwatch`          | Stopwatch widgets |
+| `.timer`              | Timer widgets |
+| `.blank`              | Blank widgets |
+| `.error`              | Errors    |
+| `.text`               | Text widgets  |
+| `.timestamp`          | Timestamp widgets |
+| `.finished`           | Finished timer and countdown widgets (tip: set this one last so that it overrides other rules) |
+| `.finishedTimer`      | Finished timer widgets    |
+| `.finishedCountdown`  | Finished countdown widgets |
+| `-main`               | Alias for `main *`    |
+| `-footer`             | Alias for `footer *`  |
+| `-dynamic`            | Dynamic widgets (clocks, countdowns, stopwatches, and timers) |
+| `-static`             | Static widgets (blanks, errors, texts, and timestamps)    |
+
+This is not an exhaustive list. As long as a selector doesn't have a space, it'll probably work. If you want me to add an alias, let me know!
 
 ### Done
 
@@ -93,7 +117,7 @@ The output format will be `hh:mm:ss.cc`. You can hide the cursor behind clocks.
 >> create countdown <end time>
 ```
 
-Creates a countdown which ends at `<end time>`. `<end time>` must be a 24-hour time in your time zone. The time must be in the form `[d.]h:m[:s[.c]`.  By default, the countdown will end the next time that time occurs. To extend this time by a couple of days, add a multiple of 24 to hours or use the day unit.
+Creates a countdown which ends at `<end time>`. `<end time>` must be a 24-hour time in your time zone. Use `00:00` to count down to midnight. The time must be in the form `[d.]h:m[:s[.c]`.  By default, the countdown will end the next time that time occurs. To extend this time by a couple of days, add a multiple of 24 to hours or use the day unit.
 
 The output format will be `[hh:]mm:ss` when the time left is over 1 minute and `ss.cc` when it's under 1 minute. Hover over the widget to see the time it's counting down to.
 
@@ -117,14 +141,6 @@ Creates a timer of length `<length>`. `<length>` should be in the form `[d.]h:m[
 
 Click on the widget to start/pause it. The output format will be `[hh:]mm:ss` when the time left is over 1 minute and `ss.cc` when it's under 1 minute. When it's running, you may hover over the timer to see when it started (or when it would've started if it has been paused) and when it will end.
 
-### Timestamp
-
-```
->> create timestamp [format]
-```
-
-Creates a timestamp in the ISO 8601 format or the format of your choice. Because this website uses the moment.js library, please go [here](https://momentjs.com/docs/#/displaying/format/) to see how to format formats. You may hover over the timestamp to see the format it's using.
-
 ### Blank
 
 ```
@@ -142,6 +158,14 @@ The `font-size` of the widget is 3.75em (3em \* 1.25 line height so that 1em is 
 ```
 
 Creates a widget which displays `[text]`. By default, the font size will be half that of the other widgets (3em vs. 6em).
+
+### Timestamp
+
+```
+>> create timestamp [format]
+```
+
+Creates a timestamp in the ISO 8601 format or the format of your choice. Because this website uses the moment.js library, please go [here](https://momentjs.com/docs/#/displaying/format/) to see how to format formats. You may hover over the timestamp to see the format it's using.
 
 ## Reporting Bugs
 To report a bug, please create an issue describing the bug (what you expected to happen vs. what actually happened). Please include the console output and what browser you're using (and its version).
