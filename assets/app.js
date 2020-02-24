@@ -3,6 +3,7 @@
  * @author Nathaniel Adam
  * @license MIT
  * @todo rename to just "clock"
+ * @todo history feature, insert command
  */
 
 
@@ -520,7 +521,7 @@ class Text {
 /**
  * Parses and runs commands.
  * @param {string} cmd Command to run.
- * @returns {boolean} true if command was valid, even if resulted in error
+ * @returns {boolean} true if command was valid
  */
 function run(cmd) {
     if (cmd.split(" ")[0] === ">>") {
@@ -528,7 +529,6 @@ function run(cmd) {
 
         // permanent console log
         console.log(cmd);
-        readOnlyHistory.push(cmd);
 
         /** Arguments given to command line. `args[0]` is the command name. */
         const args = cmd.split(" ").slice(1);
@@ -752,15 +752,6 @@ const cmds = {
     }
 };
 
-/** Read only (except to append) history of commands. Zero is oldest. */
-var readOnlyHistory = [];
-/** Temp history for looking back and stuff. Zero is newest. */
-var tempHistory = [];
-/**
- * Writing in this index of tempHistory or
- * reading from this index from the end of readOnlyHistory.
- */
-var historyIndex = 0;
 /** List of widgets currently active on the page. */
 var activeWidgets = [];
 /** For widget IDs */
@@ -797,18 +788,6 @@ $(document).ready(function () {
                     event.preventDefault();
                 }
             }
-        }
-
-        // go back in history
-        if (event.code === "ArrowUp" && historyIndex < readOnlyHistory.length) {
-            // store current val into temp history
-            tempHistory[historyIndex] = $(this).val();
-            // increment and read from history
-            historyIndex++;
-            tempHistory[historyIndex] = readOnlyHistory.slice(-1 * historyIndex);
-            $(this).val("")
-            $(this).val(tempHistory[historyIndex]);
-            preventDefault();
         }
 
         // escape to blur
