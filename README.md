@@ -173,4 +173,4 @@ To report a bug, please create an issue describing the bug (what you expected to
 ## License
 This whole repository is licensed under the MIT License. What little content exists on the website itself is licensed under a Creative Commons Attribution 4.0 International License just in case.
 
-This repository also contains a copy of [Moment.js](https://momentjs.com/) v2.24.0 which is also licensed under the MIT license by the "JS Foundation and other contributors."
+This repository contains a copy of [Moment.js](https://momentjs.com/) v2.24.0 which is also licensed under the MIT license by the "JS Foundation and other contributors."
