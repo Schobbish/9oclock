@@ -1,7 +1,5 @@
-# projector
-Clock for displaying on a projector. Or whatever. There is no reason why this clock should only be used on a projector. It is meant to be displayed on any type of display. I'm just not good at coming up with clever names.
-
-You can generate timers, countdown clocks, and stopwatches. You can also change the style of the website at your will.
+# Fancy Clock
+This is my clock website. It's meant to be used as a display, but it can also be used whenever and wherever a clock is needed. The main feature of this website is that it has a command line of sorts, which can be used to create widgets and for customization. It also supports scripts (in the form of pasting multiple commands), which make it easy to make a preset for a specific use case.
 
 ## Contents
 
@@ -24,7 +22,7 @@ You can generate timers, countdown clocks, and stopwatches. You can also change 
 4. [License](#license)
 
 ## Commands
-You can give commands to the website in the textarea element. Each command should be prefixed with `>>␣` (with a space after). Fun fact if you hit shift+. (>) it will focus the textarea for you (does not work on older browsers). If you want, you can write a script beforehand and then copy and paste it into the box and it'll run it for you. You can also type normal text in the textarea to show a message or something. Commands are case-sensitive.
+You can give commands to the website in the textarea element. Each command should be prefixed with `>>␣` (with a space after). Fun fact if you hit shift+. (>) it will focus the textarea for you (this does not work on older browsers). If you want, you can write a script beforehand and then copy and paste it into the box and it'll run it for you. You can also type normal text in the textarea to show a message or something. Commands are case-sensitive.
 
 ### Create
 
@@ -174,3 +172,9 @@ To report a bug, please create an issue describing the bug (what you expected to
 This whole repository is licensed under the MIT License. What little content exists on the website itself is licensed under a Creative Commons Attribution 4.0 International License just in case.
 
 This repository contains a copy of [Moment.js](https://momentjs.com/) v2.24.0 which is also licensed under the MIT license by the "JS Foundation and other contributors."
+
+## What I Want To Add Soon
+
+* A command history feature
+* `>> insert <index> <widget> [args...]` command
+* A way to run and save scripts, possibly through a `>> script <run|save>` command

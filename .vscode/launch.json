@@ -8,7 +8,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome against file",
-            "url": "file:///Users/nathan/Documents/GitHub/projector/index.html",
+            "url": "file://${workspaceFolder}/index.html",
             "webRoot": "${workspaceFolder}"
 
         }

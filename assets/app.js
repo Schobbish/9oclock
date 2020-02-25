@@ -1,9 +1,9 @@
 /**
- * @file Brains of the projector clock.
+ * @file Brains of the clock.
  * @author Nathaniel Adam
  * @license MIT
- * @todo rename to just "clock"
  * @todo history feature, insert command
+ * @todo run/save script
  */
 
 
@@ -536,7 +536,7 @@ function run(cmd) {
             // gives all args after the first to the command
             cmds[args[0]].execute.apply(null, args.slice(1));
         } else {
-            console.error(`projector error: command not found: ${args[0]}`);
+            console.error(`error: command not found: ${args[0]}`);
             activeWidgets.push(new ClockErr(`error: command not found: ${args[0]}`));
         }
 
@@ -675,7 +675,7 @@ const cmds = {
                     new (Function.prototype.bind.apply(
                         availableWidgets[newWidget], args)));
             } else {
-                console.error(`projector error: widget not found: ${newWidget}`);
+                console.error(`error: widget not found: ${newWidget}`);
                 activeWidgets.push(new ClockErr(`error: widget not found: ${newWidget}`));
             }
         }
@@ -691,7 +691,7 @@ const cmds = {
                 $(`#widget${activeWidgets[index].id}`).remove();
                 activeWidgets.splice(index, 1);
             } else {
-                console.error(`projector error: invalid index to delete: ${index}`);
+                console.error(`error: invalid index to delete: ${index}`);
             }
         }
 
