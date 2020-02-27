@@ -610,14 +610,14 @@ function showError(id, type, message) {
 // in case browser doesn't support padStart
 if (!window.String.prototype.padStart) {
     /**
-     * (bad) Reimplementation of padStart for old browsers
+     * (bad) Polyfill of padStart for old browsers
      * @param {targetLength} number Length string should be
      * @param {padChar} string One character only!!
      *  Character to pad string to targetLength
      */
     window.String.prototype.padStart = function (targetLength, padChar) {
         if (padChar.length > 1) {
-            console.warn("This reimplementation of padStart() should only be used with single character pad strings.");
+            console.warn("This polyfill of padStart() should only be used with single character pad strings.");
         }
         if (this.length < targetLength) {
             var outStr = padChar.toString();
