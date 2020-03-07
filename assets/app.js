@@ -148,11 +148,11 @@ class Countdown {
             outStr += Math.floor(this.timeLeft.asHours()) + ":";
         }
         if (this.timeLeft.asMinutes() >= 1) {
-            outStr += this.timeLeft.minutes().toString().padStart(2, 0) + ":";
-            outStr += this.timeLeft.seconds().toString().padStart(2, 0);
+            outStr += this.timeLeft.minutes().toString().padStart(2, "0") + ":";
+            outStr += this.timeLeft.seconds().toString().padStart(2, "0");
         } else {
-            outStr += this.timeLeft.seconds().toString().padStart(2, 0);
-            outStr += "." + this.timeLeft.milliseconds().toString().padStart(3, 0).slice(0, 2);
+            outStr += this.timeLeft.seconds().toString().padStart(2, "0");
+            outStr += "." + this.timeLeft.milliseconds().toString().padStart(3, "0").slice(0, 2);
         }
         return outStr;
     }
@@ -288,9 +288,9 @@ class Stopwatch {
         if (dur.asHours() >= 1) {
             outStr += Math.floor(dur.asHours()) + ":";
         }
-        outStr += dur.minutes().toString().padStart(2, 0) + ":";
-        outStr += dur.seconds().toString().padStart(2, 0) + ".";
-        outStr += dur.milliseconds().toString().padStart(3, 0).slice(0, 2);
+        outStr += dur.minutes().toString().padStart(2, "0") + ":";
+        outStr += dur.seconds().toString().padStart(2, "0") + ".";
+        outStr += dur.milliseconds().toString().padStart(3, "0").slice(0, 2);
         return outStr;
     }
 
@@ -409,11 +409,11 @@ class Timer {
             outStr += Math.floor(this.timeLeft.asHours()) + ":";
         }
         if (this.timeLeft.asMinutes() >= 1) {
-            outStr += this.timeLeft.minutes().toString().padStart(2, 0) + ":";
-            outStr += this.timeLeft.seconds().toString().padStart(2, 0);
+            outStr += this.timeLeft.minutes().toString().padStart(2, "0") + ":";
+            outStr += this.timeLeft.seconds().toString().padStart(2, "0");
         } else {
-            outStr += this.timeLeft.seconds().toString().padStart(2, 0);
-            outStr += "." + this.timeLeft.milliseconds().toString().padStart(3, 0).slice(0, 2);
+            outStr += this.timeLeft.seconds().toString().padStart(2, "0");
+            outStr += "." + this.timeLeft.milliseconds().toString().padStart(3, "0").slice(0, 2);
         }
         return outStr;
     }
