@@ -22,7 +22,7 @@ This is my clock website. It's meant to be used as a display, but it can also be
 4. [License](#license)
 
 ## Commands
-You can give commands to the website in the textarea element. Each command should be prefixed with `>>␣` (with a space after). Fun fact if you hit shift+. (>) it will focus the textarea for you (this does not work on older browsers). If you want, you can write a script beforehand and then copy and paste it into the box and it'll run it for you. You can also type normal text in the textarea to show a message or something. Commands are case-sensitive.
+You can give commands to the website in the textarea element. Each command should be prefixed with `>>␣` (with a space after). Fun fact if you hit shift+. (type `>`) it will focus the textarea for you (this does not work on older browsers). If you want, you can write a script beforehand and then copy and paste it into the box and it'll run it for you. You can also type normal text in the textarea to show a message or something. Commands are case-sensitive.
 
 ### Create
 
