@@ -4,6 +4,7 @@
  * @license MIT
  * @todo history feature, insert command
  * @todo run/save script
+ * @todo event got deprecated??
  */
 
 
@@ -748,7 +749,6 @@ const cmds = {
                 console.warn("Execution is not stopped.");
             }
         }
-
     }
 };
 
